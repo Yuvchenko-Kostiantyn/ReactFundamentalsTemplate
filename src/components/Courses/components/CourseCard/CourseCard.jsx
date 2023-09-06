@@ -15,7 +15,11 @@ export const CourseCard = ({ course, handleShowCourse }) => {
 			<div className={styles.cardDetails}>
 				<p>
 					<b>Authors: </b>
-					{course.authors.join(', ')}
+					<ul className={styles.authorsList}>
+						{course.authors.map((authorName) => (
+							<li key={authorName}>{authorName}</li>
+						))}
+					</ul>
 				</p>
 				<p>
 					<b>Duration: </b>

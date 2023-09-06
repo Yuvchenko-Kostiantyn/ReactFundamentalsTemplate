@@ -31,3 +31,16 @@
   display: flex;
   gap: 10px;
 }
+
+.authorsList {
+  list-style: none;
+  padding-left: 0;
+  display: inline;
+  overflow: hidden;
+}
+
+.authorsList li {
+  display: inline;
+  margin-right: 5px;
+  overflow: hidden;
+}

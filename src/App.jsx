@@ -11,7 +11,6 @@ function App() {
 	const [showCourse, setShowCourse] = useState('');
 
 	const handleShowCourse = (courseId) => {
-		console.log(courseId);
 		setShowCourse(courseId);
 	};
 
