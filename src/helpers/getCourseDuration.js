@@ -1,6 +1,6 @@
 export const getCourseDuration = (duration) => {
+	const minutes = duration % 60;
+	const hours = Math.floor(duration / 60);
 
-	// write your solution here
-	
-	return duration
+	return `${hours}:${minutes} ${hours > 1 ? 'hours' : 'hour'}`;
 };

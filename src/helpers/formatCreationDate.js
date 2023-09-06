@@ -1,6 +1,4 @@
 export const formatCreationDate = (date) => {
-  
-  	// write your solution here
-
-  return date;
-}
+	const [day, month, year] = date.split('/');
+	return `${day}.${month}.${year}`;
+};

@@ -4,6 +4,8 @@
   border: 1px solid black;
   justify-content: space-between;
   gap: 16px;
+  max-width: 800px;
+  margin-bottom: 30px;
 }
 
 .cardText {
