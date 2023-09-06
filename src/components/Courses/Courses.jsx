@@ -1,27 +1,26 @@
 import React from 'react';
 
 import { Button, Input } from '../../common';
+import { mapAuthorNames } from '../../helpers';
 import { CourseCard } from './components';
 import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourses';
 
 import styles from './styles.module.css';
 
 export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
-	const mapAuthors = (authorIdArray) => {
-		return authorIdArray.map((id) => {
-			return authorsList.find((author) => author.id === id).name;
-		});
-	};
-
 	const courseListWithAuthors = coursesList.map((course) => {
 		return {
 			...course,
-			authors: mapAuthors(course.authors),
+			authors: mapAuthorNames(course.authors, authorsList),
 		};
 	});
 
 	const courseList = courseListWithAuthors.map((course) => (
-		<CourseCard course={course} key={course.id}></CourseCard>
+		<CourseCard
+			course={course}
+			key={course.id}
+			handleShowCourse={handleShowCourse}
+		></CourseCard>
 	));
 
 	return (

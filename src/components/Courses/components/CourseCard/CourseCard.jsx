@@ -29,7 +29,10 @@ export const CourseCard = ({ course, handleShowCourse }) => {
 					{/* reuse Button component for 'Show course' button // reuse Button*/}
 					{/*component for 'Delete' button with data-testid="deleteCourse" // reuse*/}
 					{/*Button component for 'Update' button with data-testid="updateCourse"*/}
-					<Button buttonText={'Show Course'}></Button>
+					<Button
+						buttonText={'Show Course'}
+						handleClick={() => handleShowCourse(course.id)}
+					></Button>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,12 @@
 import React from 'react';
 
-// import { formatCreationDate, getCourseDuration } from "../../helpers";
+import { Button } from '../../common';
+import {
+	formatCreationDate,
+	getCourseDuration,
+	mapAuthorNames,
+} from '../../helpers';
+
 import styles from './styles.module.css';
 
 export const CourseInfo = ({
@@ -9,36 +15,41 @@ export const CourseInfo = ({
 	onBack,
 	showCourseId,
 }) => {
-	// write your code here
+	const course = coursesList.find((course) => course.id === showCourseId);
+	const courseAuthors = mapAuthorNames(course.authors, authorsList);
 
 	return (
-		<div data-testid='courseInfo'>
+		<div className={styles.courseWrapper} data-testid='courseInfo'>
 			{/* Module 1: reuse Button component for 'onBack' functionality // Module*/}
 			{/*2: use 'react-router-dom' 'Link' component for button 'Back'*/}
-			<h1>Course title</h1>
+			<h1>{course.title}</h1>
 			<div className={styles.courseInfo}>
-				<p className={styles.description}>{}</p>
+				<p className={styles.description}>{course?.description}</p>
 				<div>
 					<p>
 						<b>ID: </b>
-						id
+						{course?.id}
 					</p>
 					<p>
 						<b>Duration: </b>
-						duration
+						{getCourseDuration(course?.duration)}
 					</p>
 					<p>
 						<b>Created: </b>
-						creation date
+						{formatCreationDate(course?.creationDate)}
 					</p>
 					<div>
-						<b>Authors</b>
+						<b>Authors: </b>
 						<ul className={styles.authorsList}>
-							{/*use '.map' to render authors list with 'li' tag*/}
+							{courseAuthors.map((authorName) => (
+								<li key={authorName}>{authorName}</li>
+							))}
 						</ul>
 					</div>
 				</div>
 			</div>
+
+			<Button buttonText={'Back'} handleClick={onBack}></Button>
 		</div>
 	);
 };
