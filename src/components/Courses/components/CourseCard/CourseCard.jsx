@@ -1,11 +1,17 @@
 import React from 'react';
 
 import { Button } from '../../../../common';
-import { formatCreationDate, getCourseDuration } from '../../../../helpers';
+import {
+	formatCreationDate,
+	getCourseDuration,
+	mapAuthorNames,
+} from '../../../../helpers';
 
 import styles from './styles.module.css';
 
-export const CourseCard = ({ course, handleShowCourse }) => {
+export const CourseCard = ({ course, handleShowCourse, authorsList }) => {
+	const courseAuthors = mapAuthorNames(course.authors, authorsList);
+
 	return (
 		<div className={styles.cardContainer} data-testid='courseCard'>
 			<div className={styles.cardText}>
@@ -15,11 +21,7 @@ export const CourseCard = ({ course, handleShowCourse }) => {
 			<div className={styles.cardDetails}>
 				<p>
 					<b>Authors: </b>
-					<ul className={styles.authorsList}>
-						{course.authors.map((authorName) => (
-							<li key={authorName}>{authorName}</li>
-						))}
-					</ul>
+					<span>{courseAuthors.join(', ')}</span>
 				</p>
 				<p>
 					<b>Duration: </b>
