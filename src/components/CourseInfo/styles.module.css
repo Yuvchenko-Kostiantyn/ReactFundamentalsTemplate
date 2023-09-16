@@ -3,9 +3,27 @@
   gap: 50px;
 }
 
+.courseWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseWrapper button {
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
 .authorsList {
   list-style: none;
   padding-left: 0;
+  display: inline;
+  overflow: hidden;
+}
+
+.authorsList li {
+  display: inline;
+  margin-right: 5px;
+  overflow: hidden;
 }
 
 .description {

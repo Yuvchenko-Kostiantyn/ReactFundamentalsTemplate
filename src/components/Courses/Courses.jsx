@@ -1,21 +1,38 @@
 import React from 'react';
 
+import { Button, Input } from '../../common';
+import { CourseCard } from './components';
+import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourses';
+
 import styles from './styles.module.css';
 
-export const Courses = ({coursesList, authorsList, handleShowCourse}) => {
-
-	// write your code here
-
-	// for EmptyCourseListComponent container use data-testid="emptyContainer" attribute
-	// for button in EmptyCourseListComponent add data-testid="addCourse" attribute
+export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
+	const courseList = coursesList.map((course) => (
+		<CourseCard
+			course={course}
+			authorsList={authorsList}
+			key={course.id}
+			handleShowCourse={handleShowCourse}
+		></CourseCard>
+	));
 
 	return (
 		<>
 			<div className={styles.panel}>
-				// reuse Button component for 'Add new course' button
+				<div className={styles.search}>
+					<Input placeholderText={'Input text'}></Input>
+					<Button buttonText={'Search'}></Button>
+				</div>
+
+				{courseList.length ? (
+					<Button buttonText={'Add New Course'}></Button>
+				) : null}
 			</div>
-			
-			// use '.map' to render all courses. Use CourseCard component
+			{courseList.length ? (
+				courseList
+			) : (
+				<EmptyCourseList data-testid='emptyContainer'></EmptyCourseList>
+			)}
 		</>
 	);
 };

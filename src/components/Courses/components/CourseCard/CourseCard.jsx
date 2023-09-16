@@ -1,36 +1,44 @@
 import React from 'react';
 
-import { getCourseDuration, formatCreationDate } from '../../../../helpers';
+import { Button } from '../../../../common';
+import {
+	formatCreationDate,
+	getCourseDuration,
+	mapAuthorNames,
+} from '../../../../helpers';
 
-export const CourseCard = ({course, handleShowCourse, authorsList}) => {
+import styles from './styles.module.css';
 
-		// write your code here
+export const CourseCard = ({ course, handleShowCourse, authorsList }) => {
+	const courseAuthors = mapAuthorNames(course.authors, authorsList);
 
 	return (
 		<div className={styles.cardContainer} data-testid='courseCard'>
 			<div className={styles.cardText}>
-				<h2>Title</h2>
-				<p>Description</p>
+				<h2>{course.title}</h2>
+				<p>{course.description}</p>
 			</div>
 			<div className={styles.cardDetails}>
 				<p>
 					<b>Authors: </b>
-					authors list
+					<span>{courseAuthors.join(', ')}</span>
 				</p>
 				<p>
-					<b>Duration:</b>
-					<span>duration</span>
+					<b>Duration: </b>
+					<span>{getCourseDuration(course.duration)}</span>
 				</p>
 				<p>
 					<b>Created: </b>
-					<span>date</span>
+					<span>{formatCreationDate(course.creationDate)}</span>
 				</p>
 				<div>
-
-					// reuse Button component for 'Show course' button
-					// reuse Button component for 'Delete' button with data-testid="deleteCourse"
-					// reuse Button component for 'Update' button with data-testid="updateCourse"
-
+					{/* reuse Button component for 'Show course' button // reuse Button*/}
+					{/*component for 'Delete' button with data-testid="deleteCourse" // reuse*/}
+					{/*Button component for 'Update' button with data-testid="updateCourse"*/}
+					<Button
+						buttonText={'Show Course'}
+						handleClick={() => handleShowCourse(course.id)}
+					></Button>
 				</div>
 			</div>
 		</div>
