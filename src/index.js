@@ -39,7 +39,10 @@ root.render(
 						/>
 					}
 				></Route>
-				<Route path='/courses/add' element={<CourseForm />}></Route>
+				<Route
+					path='/courses/add'
+					element={<CourseForm authorsList={mockedAuthorsList} />}
+				></Route>
 			</Route>
 		</Routes>
 	</BrowserRouter>

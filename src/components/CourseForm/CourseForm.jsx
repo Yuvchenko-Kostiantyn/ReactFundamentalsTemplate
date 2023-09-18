@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { AuthorItem, CreateAuthor } from './components';
@@ -6,14 +7,26 @@ import { AuthorItem, CreateAuthor } from './components';
 import styles from './styles.module.css';
 
 export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
+	const navigate = useNavigate();
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
+	};
+
+	const onCancel = (event) => {
+		event.preventDefault();
+
+		navigate('/courses');
 	};
 
 	return (
 		<form onSubmit={handleSubmit}>
 			<div>
-				<Input data-testid='titleInput' labelText='Title'></Input>
+				<Input
+					className={styles.titleInput}
+					data-testid='titleInput'
+					labelText='Title'
+				></Input>
 				<Button
 					data-testid='createCourseButton'
 					buttonText='Add Course'
@@ -32,12 +45,12 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 					{/*reuse Input component with data-testid='durationInput' for duration field*/}
 					<Input data-testid='durationInput' placeholderText='Duration'></Input>
 					<p>Duration:</p>
+
+					<strong>Authors</strong>
+					<CreateAuthor onCreateAuthor={createAuthor}></CreateAuthor>
 				</div>
 
-				<CreateAuthor></CreateAuthor>
-
 				<div className={styles.authorsContainer}>
-					<strong>Authors</strong>
 					{/*use 'map' to display all available autors. Reuse 'AuthorItem' component for each author*/}
 					<strong>Course authors</strong>
 					{authorsList?.map((author) => (
@@ -50,6 +63,9 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 					{/*display this paragraph if there are no authors in the course*/}
 				</div>
 			</div>
+
+			<Button buttonText='Cancel' handleClick={onCancel}></Button>
+			<Button buttonText='Create Course' handleClick={createCourse}></Button>
 		</form>
 	);
 };
