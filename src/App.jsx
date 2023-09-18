@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
-import { CourseInfo, Courses, Header } from './components';
-import { mockedAuthorsList, mockedCoursesList } from './constants';
+import { Header } from './components';
 
 import styles from './App.module.css';
 
@@ -21,22 +21,7 @@ function App() {
 	return (
 		<>
 			<Header></Header>
-			<div className={styles.container}>
-				{showCourse ? (
-					<CourseInfo
-						authorsList={mockedAuthorsList}
-						coursesList={mockedCoursesList}
-						onBack={onBack}
-						showCourseId={showCourse}
-					></CourseInfo>
-				) : (
-					<Courses
-						coursesList={mockedCoursesList}
-						authorsList={mockedAuthorsList}
-						handleShowCourse={handleShowCourse}
-					></Courses>
-				)}
-			</div>
+			<Outlet></Outlet>
 		</>
 	);
 }

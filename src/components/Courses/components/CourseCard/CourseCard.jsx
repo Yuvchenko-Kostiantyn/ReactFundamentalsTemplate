@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../../../common';
 import {
@@ -10,7 +11,13 @@ import {
 import styles from './styles.module.css';
 
 export const CourseCard = ({ course, handleShowCourse, authorsList }) => {
+	const navigate = useNavigate();
+
 	const courseAuthors = mapAuthorNames(course.authors, authorsList);
+
+	const onNavigate = (id) => {
+		navigate(`/courses/${id}`);
+	};
 
 	return (
 		<div className={styles.cardContainer} data-testid='courseCard'>
@@ -36,8 +43,8 @@ export const CourseCard = ({ course, handleShowCourse, authorsList }) => {
 					{/*component for 'Delete' button with data-testid="deleteCourse" // reuse*/}
 					{/*Button component for 'Update' button with data-testid="updateCourse"*/}
 					<Button
-						buttonText={'Show Course'}
-						handleClick={() => handleShowCourse(course.id)}
+						buttonText='Show Course'
+						handleClick={() => onNavigate(course.id)}
 					></Button>
 				</div>
 			</div>

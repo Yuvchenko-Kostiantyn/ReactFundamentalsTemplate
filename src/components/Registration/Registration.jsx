@@ -1,27 +1,53 @@
-// import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-// import styles from './styles.module.css';
+import { Button, Input } from '../../common';
+import { createUser } from '../../services';
 
-// export const Registration = () => {
+import styles from './styles.module.css';
 
-// 	// write your code here
+export const Registration = () => {
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
-// 	return (
-// 		<div className={styles.container}>
-// 			<form onSubmit={handleSubmit}>
-// 				<h1>Registration</h1>
-// 				// reurse Input component for email field
+	const handleSubmit = async (event) => {
+		event.preventDefault();
 
-// 				// reurse Input component for name field
+		await createUser({
+			name,
+			email,
+			password,
+		});
+	};
 
-// 				// reurse Input component for password field
+	const handleValueChange = (setFn, event) => {
+		setFn(event.target.value);
+	};
 
-// 				// reurse Button component for 'Login' button
-// 			</form>
-// 			<p>
-// 				If you have an account you can&nbsp;
-// 				<a>log in</a>
-// 			</p>
-// 		</div>
-// 	);
-// };
+	return (
+		<div className={styles.container}>
+			<form onSubmit={handleSubmit}>
+				<h1>Registration</h1>
+				<Input
+					onChange={(event) => handleValueChange(setName, event)}
+					labelText={'Name'}
+				></Input>
+				<Input
+					onChange={(event) => handleValueChange(setEmail, event)}
+					labelText={'Email'}
+				></Input>
+				<Input
+					onChange={(event) => handleValueChange(setPassword, event)}
+					labelText={'Password'}
+				></Input>
+
+				<Button buttonText={'Login'}></Button>
+			</form>
+			<p>
+				If you have an account you can&nbsp;
+				<Link to='/login'>log in</Link>
+			</p>
+		</div>
+	);
+};
