@@ -13,26 +13,26 @@ export const createUser = async (data) => {
 };
 
 export const login = async (data) => {
-	const response = await fetch(`${apiUrl}/login`, {
-		method: 'POST',
-		body: JSON.stringify(data),
-		headers: {
-			'Content-Type': 'application/json',
-		},
-	});
+	try {
+		const response = await fetch(`${apiUrl}/login`, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 
-	return await response.json();
+		const parsedResponse = await response.json();
+
+		return [parsedResponse, null];
+	} catch (err) {
+		return [null, err];
+	}
 };
 
-export const getCourses = async () => {
-	const response = await fetch(`${apiUrl}/courses/all`);
-	return await response.json();
-};
+export const getCourses = async () => {};
 
-export const getAuthors = async (id = null) => {
-	const authors = await fetch(`${apiUrl}/${id ? id : 'all'}`);
-	return await authors.json();
-};
+export const getAuthors = async () => {};
 
 export const getCurrentUser = async () => {
 	// write your code here

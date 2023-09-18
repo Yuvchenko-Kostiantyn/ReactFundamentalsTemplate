@@ -8,23 +8,23 @@ import styles from './styles.module.css';
 
 export const Login = () => {
 	const navigate = useNavigate();
-	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const response = await login({
-				name,
-				email,
-				password,
-			});
+		const [response, error] = await login({
+			email,
+			password,
+		});
 
+		if (response) {
 			localStorage.setItem('token', response.result);
 			navigate('/courses');
-		} catch (err) {
-			console.log(err);
+		}
+
+		if (error) {
+			console.error(error);
 		}
 	};
 
@@ -37,10 +37,6 @@ export const Login = () => {
 			<form onSubmit={handleSubmit}>
 				<h1>Login</h1>
 				<Input
-					onChange={(event) => handleValueChange(setName, event)}
-					labelText={'Name'}
-				></Input>
-				<Input
 					onChange={(event) => handleValueChange(setEmail, event)}
 					labelText={'Email'}
 				></Input>
@@ -52,7 +48,7 @@ export const Login = () => {
 			</form>
 			<p>
 				If you don't have an account you can&nbsp;
-				<Link to='/register'>register</Link>
+				<Link to='/registration'>register</Link>
 			</p>
 		</div>
 	);
