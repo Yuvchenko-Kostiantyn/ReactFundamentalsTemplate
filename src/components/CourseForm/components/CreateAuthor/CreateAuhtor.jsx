@@ -1,12 +1,18 @@
-// import React from "react";
+import React from 'react';
 
-// export const CreateAuthor = ({onCreateAuthor}) => {
-//   // write your code here
-//   return (
-//     <div>
-//       <h2>Add author</h2>
-//       // reuse Input component with data-testid="createAuthorInput" attribute
-//       //reuse Button component with data-testid="createAuthorButton" attribute
-//     </div>
-//   );
-// };
+import { Button, Input } from '../../../../common';
+
+export const CreateAuthor = ({ onCreateAuthor }) => {
+	return (
+		<div>
+			{/*reuse Input component with data-testid="createAuthorInput" attribute*/}
+			<Input data-testid='CreateAuthorInput' labelText='Author Name'></Input>
+			{/*reuse Button component with data-testid="createAuthorButton" attribute*/}
+			<Button
+				data-testid='createAuthorButton'
+				buttonText='Create Author'
+				handleClick={onCreateAuthor}
+			></Button>
+		</div>
+	);
+};
