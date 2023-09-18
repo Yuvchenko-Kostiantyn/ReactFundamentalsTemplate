@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { CourseCard } from './components';
@@ -8,8 +8,6 @@ import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourses';
 import styles from './styles.module.css';
 
 export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
-	const navigate = useNavigate();
-
 	const courseList = coursesList.map((course) => (
 		<CourseCard
 			course={course}
@@ -18,10 +16,6 @@ export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
 			handleShowCourse={handleShowCourse}
 		></CourseCard>
 	));
-
-	const onButtonClick = () => {
-		navigate('/courses/add');
-	};
 
 	return (
 		<>
@@ -32,10 +26,9 @@ export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
 				</div>
 
 				{courseList.length ? (
-					<Button
-						buttonText={'Add New Course'}
-						handleClick={onButtonClick}
-					></Button>
+					<Link to='/courses/add'>
+						<Button buttonText={'Add New Course'}></Button>
+					</Link>
 				) : null}
 			</div>
 			{courseList.length ? (

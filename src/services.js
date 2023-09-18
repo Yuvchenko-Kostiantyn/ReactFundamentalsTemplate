@@ -22,11 +22,9 @@ export const login = async (data) => {
 			},
 		});
 
-		const parsedResponse = await response.json();
-
-		return [parsedResponse, null];
+		return await response.json();
 	} catch (err) {
-		return [null, err];
+		throw new Error(err);
 	}
 };
 

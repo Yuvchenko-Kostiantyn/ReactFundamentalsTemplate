@@ -13,18 +13,14 @@ export const Login = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const [response, error] = await login({
+		const response = await login({
 			email,
 			password,
 		});
 
 		if (response) {
-			localStorage.setItem('token', 'test');
+			localStorage.setItem('token', response.result);
 			navigate('/courses');
-		}
-
-		if (error) {
-			console.error(error);
 		}
 	};
 

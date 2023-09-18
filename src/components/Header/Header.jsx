@@ -15,10 +15,6 @@ export const Header = () => {
 		navigate('/login');
 	};
 
-	const onLoginButtonClick = () => {
-		navigate('/login');
-	};
-
 	const buttonAndName = (
 		<div className={styles.userContainer}>
 			<p className={styles.userName}>Boris</p>
@@ -26,14 +22,10 @@ export const Header = () => {
 		</div>
 	);
 
-	const loginButton = (
-		<Button buttonText='LOGIN' handleClick={onLoginButtonClick}></Button>
-	);
-
 	return (
 		<div className={styles.headerContainer}>
 			<Logo></Logo>
-			{token ? buttonAndName : loginButton}
+			{token ? buttonAndName : null}
 		</div>
 	);
 };

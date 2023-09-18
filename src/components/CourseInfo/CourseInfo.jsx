@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { Button } from '../../common';
 import {
@@ -17,14 +17,8 @@ export const CourseInfo = ({
 	showCourseId,
 }) => {
 	const { id } = useParams();
-	const navigate = useNavigate();
-
 	const course = coursesList.find((course) => course.id === id);
-	const courseAuthors = mapAuthorNames(course.authors, authorsList);
-
-	const navigateBack = () => {
-		navigate('/courses');
-	};
+	const courseAuthors = mapAuthorNames(course?.authors, authorsList);
 
 	return (
 		<div className={styles.courseWrapper} data-testid='courseInfo'>
@@ -56,8 +50,9 @@ export const CourseInfo = ({
 					</div>
 				</div>
 			</div>
-
-			<Button buttonText='Back' handleClick={navigateBack}></Button>
+			<Link to='/courses'>
+				<Button buttonText='Back'></Button>
+			</Link>
 		</div>
 	);
 };
