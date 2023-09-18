@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../common';
@@ -8,21 +8,16 @@ import styles from './styles.module.css';
 
 export const Header = () => {
 	const navigate = useNavigate();
-	const [token, setToken] = useState('');
+	const token = localStorage.getItem('token');
 
 	const onLogout = () => {
 		localStorage.removeItem('token');
-		setToken('');
+		navigate('/login');
 	};
 
 	const onLoginButtonClick = () => {
 		navigate('/login');
 	};
-
-	useEffect(() => {
-		console.log('effect');
-		setToken(localStorage.getItem('token'));
-	});
 
 	const buttonAndName = (
 		<div className={styles.userContainer}>

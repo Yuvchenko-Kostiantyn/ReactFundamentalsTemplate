@@ -19,7 +19,7 @@ export const Login = () => {
 		});
 
 		if (response) {
-			localStorage.setItem('token', response.result);
+			localStorage.setItem('token', 'test');
 			navigate('/courses');
 		}
 
