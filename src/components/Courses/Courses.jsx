@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { CourseCard } from './components';
@@ -25,14 +26,18 @@ export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
 				</div>
 
 				{courseList.length ? (
-					<Button buttonText={'Add New Course'}></Button>
+					<Link to='/courses/add'>
+						<Button buttonText={'Add New Course'}></Button>
+					</Link>
 				) : null}
 			</div>
-			{courseList.length ? (
-				courseList
-			) : (
-				<EmptyCourseList data-testid='emptyContainer'></EmptyCourseList>
-			)}
+			<div className={styles.cardsWrapper}>
+				{courseList.length ? (
+					courseList
+				) : (
+					<EmptyCourseList data-testid='emptyContainer'></EmptyCourseList>
+				)}
+			</div>
 		</>
 	);
 };

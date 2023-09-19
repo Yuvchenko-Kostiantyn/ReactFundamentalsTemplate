@@ -1,18 +1,36 @@
+const apiUrl = 'http://localhost:4000';
+
 export const createUser = async (data) => {
-	// write your code here
+	const response = await fetch(`${apiUrl}/register`, {
+		method: 'POST',
+		body: JSON.stringify(data),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	});
+
+	return await response.json();
 };
 
 export const login = async (data) => {
-	// write your code here
+	try {
+		const response = await fetch(`${apiUrl}/login`, {
+			method: 'POST',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+
+		return await response.json();
+	} catch (err) {
+		throw new Error(err);
+	}
 };
 
-export const getCourses = async () => {
-	// write your code here
-};
+export const getCourses = async () => {};
 
-export const getAuthors = async () => {
-	// write your code here
-};
+export const getAuthors = async () => {};
 
 export const getCurrentUser = async () => {
 	// write your code here
