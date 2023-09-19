@@ -17,7 +17,10 @@ export const CourseInfo = ({
 	showCourseId,
 }) => {
 	const { id } = useParams();
-	const course = coursesList.find((course) => course.id === id);
+	const course = coursesList.find((course) => {
+		return course.id === id;
+	});
+
 	const courseAuthors = mapAuthorNames(course?.authors, authorsList);
 
 	return (

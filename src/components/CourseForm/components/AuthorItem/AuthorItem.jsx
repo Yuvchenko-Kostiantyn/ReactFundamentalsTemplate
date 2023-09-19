@@ -4,9 +4,19 @@ import { Button } from '../../../../common';
 
 import styles from './styles.module.css';
 
-export const AuthorItem = () => (
+export const AuthorItem = ({ author, addAuthor, removeAuthor }) => (
 	<div className={styles.authorItem} data-testid='authorItem'>
-		<span>Boris Smith</span>
-		<Button buttonText='Add Author' data-testid='addAuthor'></Button>
+		<span>{author?.name}</span>
+		<Button
+			type={'button'}
+			buttonText='+'
+			handleClick={() => addAuthor(author)}
+			data-testid='addAuthor'
+		></Button>
+		<Button
+			buttonText='🗑'
+			handleClick={() => removeAuthor(author)}
+			data-testid='removeAuthor'
+		></Button>
 	</div>
 );

@@ -33,10 +33,12 @@ export const Login = () => {
 			<form onSubmit={handleSubmit}>
 				<h1>Login</h1>
 				<Input
+					type={'email'}
 					onChange={(event) => handleValueChange(setEmail, event)}
 					labelText={'Email'}
 				></Input>
 				<Input
+					type={'password'}
 					onChange={(event) => handleValueChange(setPassword, event)}
 					labelText={'Password'}
 				></Input>

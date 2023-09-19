@@ -31,11 +31,13 @@ export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
 					</Link>
 				) : null}
 			</div>
-			{courseList.length ? (
-				courseList
-			) : (
-				<EmptyCourseList data-testid='emptyContainer'></EmptyCourseList>
-			)}
+			<div className={styles.cardsWrapper}>
+				{courseList.length ? (
+					courseList
+				) : (
+					<EmptyCourseList data-testid='emptyContainer'></EmptyCourseList>
+				)}
+			</div>
 		</>
 	);
 };
