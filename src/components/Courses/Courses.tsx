@@ -1,13 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { IAuthor } from '../../types/author.interface';
+import { ICourse } from '../../types/course.interface';
+
 import { Button, Input } from '../../common';
 import { CourseCard } from './components';
 import { EmptyCourseList } from './components/EmptyCourseList/EmptyCourses';
 
 import styles from './styles.module.css';
 
-export const Courses = ({ coursesList, authorsList, handleShowCourse }) => {
+type CoursesProps = {
+	coursesList: ICourse[];
+	authorsList: IAuthor[];
+	handleShowCourse?: Function;
+};
+
+export const Courses = ({
+	coursesList,
+	authorsList,
+	handleShowCourse,
+}: CoursesProps) => {
 	const courseList = coursesList.map((course) => (
 		<CourseCard
 			course={course}

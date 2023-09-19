@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 
 import { Button, Input } from '../../../../common';
 
 import styles from './styles.module.css';
 
-export const CreateAuthor = ({ onCreateAuthor }) => {
+type CreateAuthorProps = {
+	onCreateAuthor: Function;
+};
+
+export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 	const [newAuthor, setNewAuthor] = useState('');
 
-	const onInputChange = (event) => {
+	const onInputChange = (event: BaseSyntheticEvent) => {
 		setNewAuthor(event.target.value);
 	};
 
-	const handleCreateAuthor = (newAuthorName) => {
+	const handleCreateAuthor = (newAuthorName: string) => {
 		const newAuthor = {
 			name: newAuthorName,
 			id: Math.floor(Math.random() * 1000),

@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { BaseSyntheticEvent, SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { IAuthor } from '../../types/author.interface';
+import { ICourse } from '../../types/course.interface';
 
 import { Button, Input } from '../../common';
 import { getCourseDuration } from '../../helpers';
@@ -7,7 +10,17 @@ import { AuthorItem, CreateAuthor } from './components';
 
 import styles from './styles.module.css';
 
-export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
+type CourseFormProps = {
+	authorsList: IAuthor[];
+	createCourse: Function;
+	createAuthor: Function;
+};
+
+export const CourseForm = ({
+	authorsList,
+	createCourse,
+	createAuthor,
+}: CourseFormProps) => {
 	const emptyCourse = {
 		title: '',
 		description: '',
@@ -16,10 +29,10 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 		authors: [],
 	};
 
-	const [course, setCourse] = useState(emptyCourse);
-	const [courseAuthors, setCourseAuthors] = useState([]);
+	const [course, setCourse] = useState<ICourse>(emptyCourse);
+	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
 
-	const handleSubmit = (event) => {
+	const handleSubmit = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
 		const today = new Date();
 		const creationDate = `${today.getDate()}/${
@@ -28,40 +41,33 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 		createCourse({ ...course, creationDate });
 	};
 
-	const onValueInput = (event) => {
+	const onValueInput = (event: BaseSyntheticEvent) => {
 		const { name, value } = event.target;
 		setCourse((prevState) => ({ ...prevState, [name]: value }));
 	};
 
-	const addCourseAuthor = (newAuthor) => {
-		const isAlreadyInTheList = course.authors.find(
-			(author) => newAuthor.id === author.id
-		);
+	const addCourseAuthor = (newAuthor: IAuthor) => {
+		setCourse((prevState: ICourse): ICourse => {
+			return {
+				title: prevState.title,
+				description: prevState.description,
+				duration: prevState.duration,
+				creationDate: prevState.creationDate,
+				authors: [...prevState.authors, newAuthor.name],
+			};
+		});
 
-		if (!isAlreadyInTheList) {
-			setCourse((prevState) => {
-				return {
-					title: prevState.title,
-					description: prevState.description,
-					duration: prevState.duration,
-					creationDate: prevState.creationDate,
-					authors: [...prevState.authors, newAuthor.id],
-				};
-			});
-
-			setCourseAuthors(() => {
-				return authorsList.filter((author) =>
-					course.authors.find((id) => author.id === id)
-				);
-			});
-		}
+		setCourseAuthors((): SetStateAction<any> => {
+			return authorsList.filter((author) =>
+				course.authors.find((id) => author.id === id)
+			);
+		});
 	};
 
 	return (
 		<form onSubmit={handleSubmit}>
 			<div>
 				<Input
-					className={styles.titleInput}
 					name={'title'}
 					data-testid='titleInput'
 					labelText='Title'
@@ -99,6 +105,7 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 						{authorsList.map((author) => (
 							<AuthorItem
 								addAuthor={addCourseAuthor}
+								removeAuthor={() => console.log('Remove Course Author')}
 								key={author.id}
 								author={author}
 							/>
@@ -109,8 +116,13 @@ export const CourseForm = ({ authorsList, createCourse, createAuthor }) => {
 				<div className={styles.authorsContainer}>
 					{/*use 'map' to display all available authors. Reuse 'AuthorItem' component for each author*/}
 					<strong>Course authors</strong>
-					{courseAuthors?.map((author) => (
-						<AuthorItem author={author} key={author?.id} />
+					{courseAuthors?.map((author: IAuthor) => (
+						<AuthorItem
+							author={author}
+							key={author?.id}
+							addAuthor={() => console.log('Add Author')}
+							removeAuthor={() => console.log('Remove Author')}
+						/>
 					))}
 					{/* <p data-testid="selectedAuthor"}>{author.name}</p> */}
 					{!courseAuthors?.length ? (

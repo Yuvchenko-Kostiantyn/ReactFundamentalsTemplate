@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { IAuthor } from '../../types/author.interface';
+import { ICourse } from '../../types/course.interface';
+
 import { Button } from '../../common';
 import {
 	formatCreationDate,
@@ -10,14 +13,21 @@ import {
 
 import styles from './styles.module.css';
 
+type CourseInfoProps = {
+	coursesList: ICourse[];
+	authorsList: IAuthor[];
+	onBack?: Function;
+	showCourseId?: Function;
+};
+
 export const CourseInfo = ({
 	coursesList,
 	authorsList,
 	onBack,
 	showCourseId,
-}) => {
+}: CourseInfoProps) => {
 	const { id } = useParams();
-	const course = coursesList.find((course) => {
+	const course = coursesList.find((course: ICourse) => {
 		return course.id === id;
 	});
 
@@ -27,7 +37,7 @@ export const CourseInfo = ({
 		<div className={styles.courseWrapper} data-testid='courseInfo'>
 			{/* Module 1: reuse Button component for 'onBack' functionality // Module*/}
 			{/*2: use 'react-router-dom' 'Link' component for button 'Back'*/}
-			<h1>{course.title}</h1>
+			<h1>{course?.title}</h1>
 			<div className={styles.courseInfo}>
 				<p className={styles.description}>{course?.description}</p>
 				<div>
@@ -46,7 +56,7 @@ export const CourseInfo = ({
 					<div>
 						<b>Authors: </b>
 						<ul className={styles.authorsList}>
-							{courseAuthors.map((authorName) => (
+							{courseAuthors.map((authorName: string) => (
 								<li key={authorName}>{authorName}</li>
 							))}
 						</ul>

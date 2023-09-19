@@ -1,10 +1,22 @@
 import React from 'react';
 
+import { IAuthor } from '../../../../types/author.interface';
+
 import { Button } from '../../../../common';
 
 import styles from './styles.module.css';
 
-export const AuthorItem = ({ author, addAuthor, removeAuthor }) => (
+type AuthorItemProps = {
+	author: IAuthor;
+	addAuthor: Function;
+	removeAuthor: Function;
+};
+
+export const AuthorItem = ({
+	author,
+	addAuthor,
+	removeAuthor,
+}: AuthorItemProps) => (
 	<div className={styles.authorItem} data-testid='authorItem'>
 		<span>{author?.name}</span>
 		<Button

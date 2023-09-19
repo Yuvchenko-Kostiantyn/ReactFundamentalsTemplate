@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import { IAuthor } from './types/author.interface';
+import { ICourse } from './types/course.interface';
+
 import {
 	CourseForm,
 	CourseInfo,
@@ -13,10 +16,10 @@ import { mockedAuthorsList, mockedCoursesList } from './constants';
 
 // Task 2 and 3 - wrap your App with redux Provider and BrowserRouter in src/index.js
 function App() {
-	const [courses, setCourses] = useState(mockedCoursesList);
-	const [authors, setAuthors] = useState(mockedAuthorsList);
+	const [courses, setCourses] = useState<ICourse[]>(mockedCoursesList);
+	const [authors, setAuthors] = useState<IAuthor[]>(mockedAuthorsList);
 
-	const createCourse = (newCourse) => {
+	const createCourse = (newCourse: ICourse): void => {
 		const courseWithId = {
 			id: `${Math.floor(Math.random() * 100)}`,
 			...newCourse,
@@ -25,7 +28,7 @@ function App() {
 		setCourses((prevValue) => [...prevValue, courseWithId]);
 	};
 
-	const createAuthor = (newAuthor) => {
+	const createAuthor = (newAuthor: IAuthor) => {
 		setAuthors((prevValue) => [...prevValue, newAuthor]);
 	};
 

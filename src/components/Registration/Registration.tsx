@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
@@ -11,7 +11,7 @@ export const Registration = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: BaseSyntheticEvent) => {
 		event.preventDefault();
 
 		await createUser({
@@ -21,7 +21,10 @@ export const Registration = () => {
 		});
 	};
 
-	const handleValueChange = (setFn, event) => {
+	const handleValueChange = (
+		setFn: React.Dispatch<any>,
+		event: BaseSyntheticEvent
+	) => {
 		setFn(event.target.value);
 	};
 

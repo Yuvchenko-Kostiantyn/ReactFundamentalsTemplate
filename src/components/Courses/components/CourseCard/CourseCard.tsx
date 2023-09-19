@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { IAuthor } from '../../../../types/author.interface';
+import { ICourse } from '../../../../types/course.interface';
+
 import { Button } from '../../../../common';
 import {
 	formatCreationDate,
@@ -10,7 +13,17 @@ import {
 
 import styles from './styles.module.css';
 
-export const CourseCard = ({ course, handleShowCourse, authorsList }) => {
+type CourseCardProps = {
+	course: ICourse;
+	authorsList: IAuthor[];
+	handleShowCourse?: Function;
+};
+
+export const CourseCard = ({
+	course,
+	authorsList,
+	handleShowCourse,
+}: CourseCardProps) => {
 	const courseAuthors = mapAuthorNames(course.authors, authorsList);
 
 	return (

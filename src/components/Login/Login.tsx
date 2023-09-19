@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
@@ -11,7 +11,7 @@ export const Login = () => {
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
-	const handleSubmit = async (event) => {
+	const handleSubmit = async (event: BaseSyntheticEvent) => {
 		event.preventDefault();
 		const response = await login({
 			email,
@@ -24,7 +24,10 @@ export const Login = () => {
 		}
 	};
 
-	const handleValueChange = (setFn, event) => {
+	const handleValueChange = (
+		setFn: React.Dispatch<React.SetStateAction<string>>,
+		event: BaseSyntheticEvent
+	) => {
 		setFn(event.target.value);
 	};
 
