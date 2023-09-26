@@ -45,7 +45,7 @@ export const Registration = () => {
 					labelText={'Password'}
 				></Input>
 
-				<Button buttonText={'Login'}></Button>
+				<Button type={'submit'} buttonText={'Login'}></Button>
 			</form>
 			<p>
 				If you have an account you can&nbsp;

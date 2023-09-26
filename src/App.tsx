@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { IAuthor } from './types/author.interface';
 import { ICourse } from './types/course.interface';
@@ -54,7 +54,7 @@ function App() {
 	}, []);
 
 	return (
-		<BrowserRouter>
+		<>
 			<Header />
 			<Routes>
 				<Route
@@ -84,7 +84,7 @@ function App() {
 					}
 				></Route>
 			</Routes>
-		</BrowserRouter>
+		</>
 	);
 }
 
