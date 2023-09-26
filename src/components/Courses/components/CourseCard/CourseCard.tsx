@@ -64,6 +64,7 @@ export const CourseCard = ({
 						buttonText={'🗑'}
 						handleClick={deleteCourse}
 					></Button>
+					<Button data-testid='updateCourse' buttonText={'Update'}></Button>
 				</div>
 			</div>
 		</div>

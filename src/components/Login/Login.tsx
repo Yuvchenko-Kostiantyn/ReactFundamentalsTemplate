@@ -22,7 +22,6 @@ export const Login = () => {
 		});
 
 		if (response) {
-			console.log(response);
 			dispatch(userSlice.actions.setUserData(response));
 			localStorage.setItem('token', response);
 			navigate('/courses');

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { IAuthor } from './types/author.interface';
 import { ICourse } from './types/course.interface';
-import { AuthorsState, CoursesState, UserState } from './types/store';
+import { AuthorsState, CoursesState } from './types/store';
 
 import {
 	CourseForm,
@@ -15,11 +15,7 @@ import {
 	Registration,
 } from './components';
 import { getAuthors, getCourses } from './services';
-import {
-	authorsSelector,
-	coursesSelector,
-	userSelector,
-} from './store/selectors';
+import { authorsSelector, coursesSelector } from './store/selectors';
 import { authorsSlice } from './store/slices/authorsSlice';
 import { coursesSlice } from './store/slices/coursesSlice';
 
@@ -29,7 +25,6 @@ function App() {
 
 	const courses: CoursesState = useSelector(coursesSelector);
 	const authors: AuthorsState = useSelector(authorsSelector);
-	const user: UserState = useSelector(userSelector);
 
 	const addCourse = (course: ICourse) => {
 		dispatch(coursesSlice.actions.saveCourse(course));
@@ -57,12 +52,6 @@ function App() {
 		<>
 			<Header />
 			<Routes>
-				<Route
-					path='/'
-					element={
-						user.isAuth ? <Navigate to='/courses' /> : <Navigate to='/login' />
-					}
-				></Route>
 				<Route path='/registration' element={<Registration />}></Route>
 				<Route path='/login' element={<Login />}></Route>
 				<Route
@@ -70,7 +59,7 @@ function App() {
 					element={<Courses coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route
-					path='/courses/:id'
+					path='/courses/:courseId'
 					element={<CourseInfo coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route
