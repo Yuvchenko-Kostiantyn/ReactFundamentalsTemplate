@@ -43,10 +43,11 @@ export const Courses = ({
 					<Input placeholderText={'Input text'}></Input>
 					<Button buttonText={'Search'}></Button>
 				</div>
-
-				<Link to='/courses/add'>
-					<Button buttonText={'Add New Course'}></Button>
-				</Link>
+				{courses.length ? (
+					<Link to='/courses/add'>
+						<Button buttonText={'Add New Course'}></Button>
+					</Link>
+				) : null}
 			</div>
 			<div className={styles.cardsWrapper}>
 				{courses.length ? (

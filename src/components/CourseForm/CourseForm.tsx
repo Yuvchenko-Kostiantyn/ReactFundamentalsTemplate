@@ -138,7 +138,7 @@ export const CourseForm = ({
 			<Link to='/courses'>
 				<Button buttonText='Cancel'></Button>
 			</Link>
-			<Button type={'submit'} buttonText='Create Course'></Button>
+			<Button buttonText='Create Course'></Button>
 		</form>
 	);
 };

@@ -39,7 +39,12 @@ export const login = async (data: IUser): Promise<string> => {
 
 export const getCourses = async (): Promise<IApiResponse<ICourse[]>> => {
 	try {
-		const response = await fetch(`${apiUrl}/courses/all`);
+		const response = await fetch(`${apiUrl}/courses/all`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 		return await response.json();
 	} catch (err: any) {
 		throw new Error(err);
@@ -48,7 +53,12 @@ export const getCourses = async (): Promise<IApiResponse<ICourse[]>> => {
 
 export const getAuthors = async (): Promise<IApiResponse<IAuthor[]>> => {
 	try {
-		const response = await fetch(`${apiUrl}/authors/all`);
+		const response = await fetch(`${apiUrl}/authors/all`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 		return await response.json();
 	} catch (err: any) {
 		throw new Error(err);

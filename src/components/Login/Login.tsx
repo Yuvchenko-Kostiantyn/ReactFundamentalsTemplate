@@ -49,7 +49,7 @@ export const Login = () => {
 					onChange={(event) => handleValueChange(setPassword, event)}
 					labelText={'Password'}
 				></Input>
-				<Button type={'submit'} buttonText='Login'></Button>
+				<Button buttonText='Login'></Button>
 			</form>
 			<p>
 				If you don't have an account you can&nbsp;

@@ -29,7 +29,7 @@ export const Header = () => {
 	return (
 		<div className={styles.headerContainer}>
 			<Logo></Logo>
-			{userData.isAuth ? buttonAndName : null}
+			{userData.token ? buttonAndName : null}
 		</div>
 	);
 };

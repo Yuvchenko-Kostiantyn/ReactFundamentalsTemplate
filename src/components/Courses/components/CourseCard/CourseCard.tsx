@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../../../types/author.interface';
@@ -11,6 +11,7 @@ import {
 	getCourseDuration,
 	mapAuthorNames,
 } from '../../../../helpers';
+import { authorsSelector } from '../../../../store/selectors';
 import { coursesSlice } from '../../../../store/slices/coursesSlice';
 
 import styles from './styles.module.css';
@@ -27,7 +28,8 @@ export const CourseCard = ({
 	handleShowCourse,
 }: CourseCardProps) => {
 	const dispatch = useDispatch();
-	const courseAuthors = mapAuthorNames(course.authors, authorsList);
+	const authors = useSelector(authorsSelector);
+	const courseAuthors = mapAuthorNames(course.authors, authors);
 
 	const deleteCourse = () => {
 		dispatch(coursesSlice.actions.deleteCourse(course.id));

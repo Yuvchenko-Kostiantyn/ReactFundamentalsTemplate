@@ -20,7 +20,6 @@ export const AuthorItem = ({
 	<div className={styles.authorItem} data-testid='authorItem'>
 		<span>{author?.name}</span>
 		<Button
-			type={'button'}
 			buttonText='+'
 			handleClick={() => addAuthor(author)}
 			data-testid='addAuthor'
