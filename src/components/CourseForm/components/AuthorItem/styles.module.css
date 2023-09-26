@@ -4,3 +4,13 @@
   margin-top: 16px;
   align-items: flex-end;
 }
+
+.authorItem button {
+  background-color: transparent;
+  color: black;
+  height: 10px;
+  width: 10px;
+  padding: 0;
+  margin: 0 0 9px 4px;
+  cursor: pointer;
+}

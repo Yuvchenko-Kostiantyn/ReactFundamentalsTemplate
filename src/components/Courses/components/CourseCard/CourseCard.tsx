@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../../../types/author.interface';
@@ -10,6 +11,7 @@ import {
 	getCourseDuration,
 	mapAuthorNames,
 } from '../../../../helpers';
+import { coursesSlice } from '../../../../store/slices/coursesSlice';
 
 import styles from './styles.module.css';
 
@@ -24,7 +26,12 @@ export const CourseCard = ({
 	authorsList,
 	handleShowCourse,
 }: CourseCardProps) => {
+	const dispatch = useDispatch();
 	const courseAuthors = mapAuthorNames(course.authors, authorsList);
+
+	const deleteCourse = () => {
+		dispatch(coursesSlice.actions.deleteCourse(course.id));
+	};
 
 	return (
 		<div className={styles.cardContainer} data-testid='courseCard'>
@@ -52,6 +59,11 @@ export const CourseCard = ({
 					<Link to={`/courses/${course.id}`}>
 						<Button buttonText='Show Course'></Button>
 					</Link>
+					<Button
+						data-testid='deleteCourse'
+						buttonText={'🗑'}
+						handleClick={deleteCourse}
+					></Button>
 				</div>
 			</div>
 		</div>

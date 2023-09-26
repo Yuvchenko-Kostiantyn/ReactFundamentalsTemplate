@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { IAuthor } from './types/author.interface';
 import { ICourse } from './types/course.interface';
+import { AuthorsState, CoursesState, UserState } from './types/store';
 
 import {
 	CourseForm,
@@ -12,27 +14,45 @@ import {
 	Login,
 	Registration,
 } from './components';
-import { mockedAuthorsList, mockedCoursesList } from './constants';
+import { getAuthors, getCourses } from './services';
+import {
+	authorsSelector,
+	coursesSelector,
+	userSelector,
+} from './store/selectors';
+import { authorsSlice } from './store/slices/authorsSlice';
+import { coursesSlice } from './store/slices/coursesSlice';
 
 // Task 2 and 3 - wrap your App with redux Provider and BrowserRouter in src/index.js
 function App() {
-	const [courses, setCourses] = useState<ICourse[]>(mockedCoursesList);
-	const [authors, setAuthors] = useState<IAuthor[]>(mockedAuthorsList);
+	const dispatch = useDispatch();
 
-	const createCourse = (newCourse: ICourse): void => {
-		const courseWithId = {
-			id: `${Math.floor(Math.random() * 100)}`,
-			...newCourse,
-		};
+	const courses: CoursesState = useSelector(coursesSelector);
+	const authors: AuthorsState = useSelector(authorsSelector);
+	const user: UserState = useSelector(userSelector);
 
-		setCourses((prevValue) => [...prevValue, courseWithId]);
+	const addCourse = (course: ICourse) => {
+		dispatch(coursesSlice.actions.saveCourse(course));
 	};
 
-	const createAuthor = (newAuthor: IAuthor) => {
-		setAuthors((prevValue) => [...prevValue, newAuthor]);
+	const addAuthor = (author: IAuthor) => {
+		dispatch(authorsSlice.actions.saveAuthor(author));
 	};
 
-	const token = localStorage.getItem('token');
+	const dispatchSetItems = (courses: ICourse[], authors: IAuthor[]) => {
+		dispatch(coursesSlice.actions.setCourses(courses));
+		dispatch(authorsSlice.actions.setAuthors(authors));
+	};
+
+	useEffect(() => {
+		(async () => {
+			const courses = await getCourses();
+			const authors = await getAuthors();
+			dispatchSetItems(courses.result, authors.result);
+		})();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	return (
 		<BrowserRouter>
 			<Header />
@@ -40,7 +60,7 @@ function App() {
 				<Route
 					path='/'
 					element={
-						token ? <Navigate to='/courses' /> : <Navigate to='/login' />
+						user.isAuth ? <Navigate to='/courses' /> : <Navigate to='/login' />
 					}
 				></Route>
 				<Route path='/registration' element={<Registration />}></Route>
@@ -58,8 +78,8 @@ function App() {
 					element={
 						<CourseForm
 							authorsList={authors}
-							createCourse={createCourse}
-							createAuthor={createAuthor}
+							createCourse={(course: ICourse) => addCourse(course)}
+							createAuthor={(author: IAuthor) => addAuthor(author)}
 						/>
 					}
 				></Route>

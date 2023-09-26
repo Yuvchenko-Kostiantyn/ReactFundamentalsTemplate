@@ -1,11 +1,13 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
 
+import { IAuthor } from '../../../../types/author.interface';
+
 import { Button, Input } from '../../../../common';
 
 import styles from './styles.module.css';
 
 type CreateAuthorProps = {
-	onCreateAuthor: Function;
+	onCreateAuthor: (author: IAuthor) => void;
 };
 
 export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
@@ -18,7 +20,7 @@ export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 	const handleCreateAuthor = (newAuthorName: string) => {
 		const newAuthor = {
 			name: newAuthorName,
-			id: Math.floor(Math.random() * 1000),
+			id: `${Math.floor(Math.random() * 1000)}`,
 		};
 
 		onCreateAuthor(newAuthor);

@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, SetStateAction, useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -13,7 +13,7 @@ import styles from './styles.module.css';
 type CourseFormProps = {
 	authorsList: IAuthor[];
 	createCourse: Function;
-	createAuthor: Function;
+	createAuthor: (author: IAuthor) => void;
 };
 
 export const CourseForm = ({
@@ -21,7 +21,7 @@ export const CourseForm = ({
 	createCourse,
 	createAuthor,
 }: CourseFormProps) => {
-	const emptyCourse = {
+	const emptyCourse: ICourse = {
 		title: '',
 		description: '',
 		duration: 0,
@@ -29,21 +29,26 @@ export const CourseForm = ({
 		authors: [],
 	};
 
-	const [course, setCourse] = useState<ICourse>(emptyCourse);
-	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
+	const [course, setCourse] = useState(emptyCourse);
+	const courseAuthors = authorsList.filter((author: IAuthor) =>
+		course.authors.includes(author.id || '')
+	);
 
 	const handleSubmit = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
+
 		const today = new Date();
 		const creationDate = `${today.getDate()}/${
 			today.getMonth() + 1
 		}/${today.getFullYear()}`;
-		createCourse({ ...course, creationDate });
+		const id = `${Math.floor(Math.random() * 1000)}`;
+
+		createCourse({ ...course, creationDate, id });
 	};
 
 	const onValueInput = (event: BaseSyntheticEvent) => {
 		const { name, value } = event.target;
-		setCourse((prevState) => ({ ...prevState, [name]: value }));
+		setCourse((prevState: ICourse) => ({ ...prevState, [name]: value }));
 	};
 
 	const addCourseAuthor = (newAuthor: IAuthor) => {
@@ -53,14 +58,8 @@ export const CourseForm = ({
 				description: prevState.description,
 				duration: prevState.duration,
 				creationDate: prevState.creationDate,
-				authors: [...prevState.authors, newAuthor.name],
+				authors: [...prevState.authors, newAuthor.id],
 			};
-		});
-
-		setCourseAuthors((): SetStateAction<any> => {
-			return authorsList.filter((author) =>
-				course.authors.find((id) => author.id === id)
-			);
 		});
 	};
 
@@ -102,7 +101,7 @@ export const CourseForm = ({
 					<strong>Authors</strong>
 					<CreateAuthor onCreateAuthor={createAuthor}></CreateAuthor>
 					<div>
-						{authorsList.map((author) => (
+						{authorsList.map((author: IAuthor) => (
 							<AuthorItem
 								addAuthor={addCourseAuthor}
 								removeAuthor={() => console.log('Remove Course Author')}
@@ -135,7 +134,7 @@ export const CourseForm = ({
 			<Link to='/courses'>
 				<Button buttonText='Cancel'></Button>
 			</Link>
-			<Button buttonText='Create Course'></Button>
+			<Button type={'submit'} buttonText='Create Course'></Button>
 		</form>
 	);
 };
