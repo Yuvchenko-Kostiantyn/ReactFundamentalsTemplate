@@ -1,4 +1,5 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -6,12 +7,13 @@ import { ICourse } from '../../types/course.interface';
 
 import { Button, Input } from '../../common';
 import { getCourseDuration } from '../../helpers';
+import { authorsSelector } from '../../store/selectors';
 import { AuthorItem, CreateAuthor } from './components';
 
 import styles from './styles.module.css';
 
 type CourseFormProps = {
-	authorsList: IAuthor[];
+	authorsList?: IAuthor[];
 	createCourse: Function;
 	createAuthor: (author: IAuthor) => void;
 };
@@ -21,6 +23,8 @@ export const CourseForm = ({
 	createCourse,
 	createAuthor,
 }: CourseFormProps) => {
+	const authors = useSelector(authorsSelector);
+
 	const emptyCourse: ICourse = {
 		title: '',
 		description: '',
@@ -30,7 +34,7 @@ export const CourseForm = ({
 	};
 
 	const [course, setCourse] = useState(emptyCourse);
-	const courseAuthors = authorsList.filter((author: IAuthor) =>
+	const courseAuthors = authors.filter((author: IAuthor) =>
 		course.authors.includes(author.id || '')
 	);
 
@@ -101,7 +105,7 @@ export const CourseForm = ({
 					<strong>Authors</strong>
 					<CreateAuthor onCreateAuthor={createAuthor}></CreateAuthor>
 					<div>
-						{authorsList.map((author: IAuthor) => (
+						{authors.map((author: IAuthor) => (
 							<AuthorItem
 								addAuthor={addCourseAuthor}
 								removeAuthor={() => console.log('Remove Course Author')}

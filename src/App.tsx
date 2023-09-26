@@ -58,15 +58,11 @@ function App() {
 					path='/courses'
 					element={<Courses coursesList={courses} authorsList={authors} />}
 				></Route>
-				<Route
-					path='/courses/:courseId'
-					element={<CourseInfo coursesList={courses} authorsList={authors} />}
-				></Route>
+				<Route path='/courses/:courseId' element={<CourseInfo />}></Route>
 				<Route
 					path='/courses/add'
 					element={
 						<CourseForm
-							authorsList={authors}
 							createCourse={(course: ICourse) => addCourse(course)}
 							createAuthor={(author: IAuthor) => addAuthor(author)}
 						/>

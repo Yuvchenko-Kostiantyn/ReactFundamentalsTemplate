@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -10,12 +11,13 @@ import {
 	getCourseDuration,
 	mapAuthorNames,
 } from '../../helpers';
+import { authorsSelector, coursesSelector } from '../../store/selectors';
 
 import styles from './styles.module.css';
 
 type CourseInfoProps = {
-	coursesList: ICourse[];
-	authorsList: IAuthor[];
+	coursesList?: ICourse[];
+	authorsList?: IAuthor[];
 	onBack?: Function;
 	showCourseId?: Function;
 };
@@ -27,11 +29,14 @@ export const CourseInfo = ({
 	showCourseId,
 }: CourseInfoProps) => {
 	const { courseId } = useParams();
-	const course = coursesList.find((course: ICourse) => {
+
+	const courses = useSelector(coursesSelector);
+	const authors = useSelector(authorsSelector);
+
+	const course = courses?.find((course: ICourse) => {
 		return course.id === courseId;
 	});
-
-	const courseAuthors = mapAuthorNames(course?.authors, authorsList);
+	const courseAuthors = mapAuthorNames(course?.authors, authors);
 
 	return (
 		<div className={styles.courseWrapper} data-testid='courseInfo'>
