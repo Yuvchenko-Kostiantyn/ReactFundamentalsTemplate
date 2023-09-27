@@ -2,3 +2,8 @@
   display: block;
   height: 50px;
 }
+
+.input {
+  border: 1px solid #CFCFCF;
+  border-radius: 4px;
+}
