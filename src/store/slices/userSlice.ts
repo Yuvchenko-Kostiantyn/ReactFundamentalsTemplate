@@ -15,8 +15,8 @@ export const userSlice = createSlice({
 	reducers: {
 		setUserData: (state: Draft<UserState>, { payload }) => {
 			state.isAuth = true;
-			state.email = payload.user.email;
-			state.name = payload.user.name;
+			state.email = payload.email;
+			state.name = payload.name;
 			state.token = payload.result;
 		},
 		removeUserData: (state: Draft<UserState>) => {

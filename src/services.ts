@@ -21,7 +21,7 @@ export const createUser = async (data: IUser) => {
 	}
 };
 
-export const login = async (data: IUser): Promise<string> => {
+export const login = async (data: IUser): Promise<any> => {
 	try {
 		const response = await fetch(`${apiUrl}/login`, {
 			method: 'POST',

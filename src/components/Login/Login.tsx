@@ -22,8 +22,14 @@ export const Login = () => {
 		});
 
 		if (response) {
-			dispatch(userSlice.actions.setUserData(response));
-			localStorage.setItem('token', response);
+			localStorage.setItem('token', response.result);
+			dispatch(
+				userSlice.actions.setUserData({
+					email: response.user.email,
+					name: response.user.name,
+					token: response.result,
+				})
+			);
 			navigate('/courses');
 		}
 	};
@@ -49,11 +55,11 @@ export const Login = () => {
 					onChange={(event) => handleValueChange(setPassword, event)}
 					labelText={'Password'}
 				></Input>
-				<Button buttonText='Login'></Button>
+				<Button buttonText='LOGIN'></Button>
 			</form>
 			<p>
 				If you don't have an account you can&nbsp;
-				<Link to='/registration'>register</Link>
+				<Link to='/registration'>Registration</Link>
 			</p>
 		</div>
 	);

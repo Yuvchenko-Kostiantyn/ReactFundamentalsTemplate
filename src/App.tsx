@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { IAuthor } from './types/author.interface';
 import { ICourse } from './types/course.interface';
-import { AuthorsState, CoursesState, UserState } from './types/store';
+import { AuthorsState, CoursesState } from './types/store';
 
 import {
 	CourseForm,
@@ -15,29 +15,16 @@ import {
 	Registration,
 } from './components';
 import { getAuthors, getCourses } from './services';
-import {
-	authorsSelector,
-	coursesSelector,
-	userSelector,
-} from './store/selectors';
+import { authorsSelector, coursesSelector } from './store/selectors';
 import { authorsSlice } from './store/slices/authorsSlice';
 import { coursesSlice } from './store/slices/coursesSlice';
 
-// Task 2 and 3 - wrap your App with redux Provider and BrowserRouter in src/index.js
 function App() {
 	const dispatch = useDispatch();
 
 	const courses: CoursesState = useSelector(coursesSelector);
 	const authors: AuthorsState = useSelector(authorsSelector);
-	const user: UserState = useSelector(userSelector);
-
-	const addCourse = (course: ICourse) => {
-		dispatch(coursesSlice.actions.saveCourse(course));
-	};
-
-	const addAuthor = (author: IAuthor) => {
-		dispatch(authorsSlice.actions.saveAuthor(author));
-	};
+	const token = localStorage.getItem('token');
 
 	const dispatchSetItems = (courses: ICourse[], authors: IAuthor[]) => {
 		dispatch(coursesSlice.actions.setCourses(courses));
@@ -60,7 +47,7 @@ function App() {
 				<Route
 					path='/'
 					element={
-						user.token ? <Navigate to='/courses' /> : <Navigate to='/login' />
+						token ? <Navigate to='/courses' /> : <Navigate to='/login' />
 					}
 				/>
 				<Route path='/registration' element={<Registration />}></Route>
@@ -70,15 +57,7 @@ function App() {
 					element={<Courses coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route path='/courses/:courseId' element={<CourseInfo />}></Route>
-				<Route
-					path='/courses/add'
-					element={
-						<CourseForm
-							createCourse={(course: ICourse) => addCourse(course)}
-							createAuthor={(author: IAuthor) => addAuthor(author)}
-						/>
-					}
-				></Route>
+				<Route path='/courses/add' element={<CourseForm />}></Route>
 			</Routes>
 		</>
 	);

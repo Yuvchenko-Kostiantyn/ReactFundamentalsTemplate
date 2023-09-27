@@ -1,5 +1,5 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -8,14 +8,15 @@ import { ICourse } from '../../types/course.interface';
 import { Button, Input } from '../../common';
 import { getCourseDuration } from '../../helpers';
 import { authorsSelector } from '../../store/selectors';
+import { coursesSlice } from '../../store/slices/coursesSlice';
 import { AuthorItem, CreateAuthor } from './components';
 
 import styles from './styles.module.css';
 
 type CourseFormProps = {
 	authorsList?: IAuthor[];
-	createCourse: Function;
-	createAuthor: (author: IAuthor) => void;
+	createCourse?: Function;
+	createAuthor?: (author: IAuthor) => void;
 };
 
 export const CourseForm = ({
@@ -24,6 +25,7 @@ export const CourseForm = ({
 	createAuthor,
 }: CourseFormProps) => {
 	const authors = useSelector(authorsSelector);
+	const dispatch = useDispatch();
 
 	const emptyCourse: ICourse = {
 		title: '',
@@ -38,6 +40,10 @@ export const CourseForm = ({
 		course.authors.includes(author.id || '')
 	);
 
+	const availableAuthors = authors.filter(
+		(author: IAuthor) => !course.authors.includes(author.id || '')
+	);
+
 	const handleSubmit = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
 
@@ -47,7 +53,7 @@ export const CourseForm = ({
 		}/${today.getFullYear()}`;
 		const id = `${Math.floor(Math.random() * 1000)}`;
 
-		createCourse({ ...course, creationDate, id });
+		dispatch(coursesSlice.actions.saveCourse({ ...course, creationDate, id }));
 	};
 
 	const onValueInput = (event: BaseSyntheticEvent) => {
@@ -63,6 +69,18 @@ export const CourseForm = ({
 				duration: prevState.duration,
 				creationDate: prevState.creationDate,
 				authors: [...prevState.authors, newAuthor.id],
+			};
+		});
+	};
+
+	const removeCourseAuthor = (author: IAuthor) => {
+		setCourse((prevState: ICourse): ICourse => {
+			return {
+				title: prevState.title,
+				description: prevState.description,
+				duration: prevState.duration,
+				creationDate: prevState.creationDate,
+				authors: prevState.authors.filter((id: string) => id !== author.id),
 			};
 		});
 	};
@@ -103,9 +121,9 @@ export const CourseForm = ({
 					<p>Duration: {getCourseDuration(course.duration)}</p>
 
 					<strong>Authors</strong>
-					<CreateAuthor onCreateAuthor={createAuthor}></CreateAuthor>
+					<CreateAuthor></CreateAuthor>
 					<div>
-						{authors.map((author: IAuthor) => (
+						{availableAuthors.map((author: IAuthor) => (
 							<AuthorItem
 								addAuthor={addCourseAuthor}
 								removeAuthor={() => console.log('Remove Course Author')}
@@ -124,7 +142,7 @@ export const CourseForm = ({
 							author={author}
 							key={author?.id}
 							addAuthor={() => console.log('Add Author')}
-							removeAuthor={() => console.log('Remove Author')}
+							removeAuthor={removeCourseAuthor}
 						/>
 					))}
 					{/* <p data-testid="selectedAuthor"}>{author.name}</p> */}

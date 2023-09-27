@@ -49,7 +49,7 @@ export const Registration = () => {
 			</form>
 			<p>
 				If you have an account you can&nbsp;
-				<Link to='/login'>log in</Link>
+				<Link to='/login'>Login</Link>
 			</p>
 		</div>
 	);
