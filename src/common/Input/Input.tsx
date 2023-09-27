@@ -6,7 +6,7 @@ type InputProps = {
 	placeholderText?: string;
 	labelText?: string;
 	onChange?: ChangeEventHandler;
-	dataTestId?: string;
+	['data-testid']?: string;
 	type?: string;
 	name?: string;
 	value?: any;
@@ -16,7 +16,7 @@ export const Input = ({
 	placeholderText,
 	labelText,
 	onChange,
-	dataTestId,
+	'data-testid': dataTestId,
 	type,
 	name,
 }: InputProps) => (
