@@ -1,4 +1,5 @@
-import React, { BaseSyntheticEvent, SetStateAction, useState } from 'react';
+import React, { BaseSyntheticEvent, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -6,14 +7,16 @@ import { ICourse } from '../../types/course.interface';
 
 import { Button, Input } from '../../common';
 import { getCourseDuration } from '../../helpers';
+import { authorsSelector } from '../../store/selectors';
+import { coursesSlice } from '../../store/slices/coursesSlice';
 import { AuthorItem, CreateAuthor } from './components';
 
 import styles from './styles.module.css';
 
 type CourseFormProps = {
-	authorsList: IAuthor[];
-	createCourse: Function;
-	createAuthor: Function;
+	authorsList?: IAuthor[];
+	createCourse?: Function;
+	createAuthor?: (author: IAuthor) => void;
 };
 
 export const CourseForm = ({
@@ -21,7 +24,10 @@ export const CourseForm = ({
 	createCourse,
 	createAuthor,
 }: CourseFormProps) => {
-	const emptyCourse = {
+	const authors = useSelector(authorsSelector);
+	const dispatch = useDispatch();
+
+	const emptyCourse: ICourse = {
 		title: '',
 		description: '',
 		duration: 0,
@@ -29,21 +35,30 @@ export const CourseForm = ({
 		authors: [],
 	};
 
-	const [course, setCourse] = useState<ICourse>(emptyCourse);
-	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
+	const [course, setCourse] = useState(emptyCourse);
+	const courseAuthors = authors.filter((author: IAuthor) =>
+		course.authors.includes(author.id || '')
+	);
+
+	const availableAuthors = authors.filter(
+		(author: IAuthor) => !course.authors.includes(author.id || '')
+	);
 
 	const handleSubmit = (event: BaseSyntheticEvent) => {
 		event.preventDefault();
+
 		const today = new Date();
 		const creationDate = `${today.getDate()}/${
 			today.getMonth() + 1
 		}/${today.getFullYear()}`;
-		createCourse({ ...course, creationDate });
+		const id = `${Math.floor(Math.random() * 1000)}`;
+
+		dispatch(coursesSlice.actions.saveCourse({ ...course, creationDate, id }));
 	};
 
 	const onValueInput = (event: BaseSyntheticEvent) => {
 		const { name, value } = event.target;
-		setCourse((prevState) => ({ ...prevState, [name]: value }));
+		setCourse((prevState: ICourse) => ({ ...prevState, [name]: value }));
 	};
 
 	const addCourseAuthor = (newAuthor: IAuthor) => {
@@ -53,14 +68,20 @@ export const CourseForm = ({
 				description: prevState.description,
 				duration: prevState.duration,
 				creationDate: prevState.creationDate,
-				authors: [...prevState.authors, newAuthor.name],
+				authors: [...prevState.authors, newAuthor.id],
 			};
 		});
+	};
 
-		setCourseAuthors((): SetStateAction<any> => {
-			return authorsList.filter((author) =>
-				course.authors.find((id) => author.id === id)
-			);
+	const removeCourseAuthor = (author: IAuthor) => {
+		setCourse((prevState: ICourse): ICourse => {
+			return {
+				title: prevState.title,
+				description: prevState.description,
+				duration: prevState.duration,
+				creationDate: prevState.creationDate,
+				authors: prevState.authors.filter((id: string) => id !== author.id),
+			};
 		});
 	};
 
@@ -100,9 +121,9 @@ export const CourseForm = ({
 					<p>Duration: {getCourseDuration(course.duration)}</p>
 
 					<strong>Authors</strong>
-					<CreateAuthor onCreateAuthor={createAuthor}></CreateAuthor>
+					<CreateAuthor></CreateAuthor>
 					<div>
-						{authorsList.map((author) => (
+						{availableAuthors.map((author: IAuthor) => (
 							<AuthorItem
 								addAuthor={addCourseAuthor}
 								removeAuthor={() => console.log('Remove Course Author')}
@@ -121,7 +142,7 @@ export const CourseForm = ({
 							author={author}
 							key={author?.id}
 							addAuthor={() => console.log('Add Author')}
-							removeAuthor={() => console.log('Remove Author')}
+							removeAuthor={removeCourseAuthor}
 						/>
 					))}
 					{/* <p data-testid="selectedAuthor"}>{author.name}</p> */}
@@ -135,7 +156,10 @@ export const CourseForm = ({
 			<Link to='/courses'>
 				<Button buttonText='Cancel'></Button>
 			</Link>
-			<Button buttonText='Create Course'></Button>
+			<Button
+				data-testid='createCourseButton'
+				buttonText='Create Course'
+			></Button>
 		</form>
 	);
 };

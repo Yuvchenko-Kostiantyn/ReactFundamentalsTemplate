@@ -5,17 +5,14 @@ import styles from './styles.module.css';
 type ButtonProps = {
 	buttonText?: string;
 	handleClick?: MouseEventHandler;
-	dataTestId?: string;
-	type?: 'button' | 'submit' | 'reset' | undefined;
+	['data-testid']?: string;
 };
 export const Button = ({
 	buttonText,
 	handleClick,
-	dataTestId,
-	type = 'button',
+	'data-testid': dataTestId,
 }: ButtonProps) => (
 	<button
-		type={type}
 		className={styles.button}
 		onClick={handleClick}
 		data-testid={dataTestId}

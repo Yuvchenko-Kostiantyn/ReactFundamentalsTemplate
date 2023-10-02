@@ -1,16 +1,35 @@
 .container {
-  max-width: 170px;
-  margin: 100px auto;
+  max-width: 585px;
+  margin: 50px auto;
   display: flex;
   justify-content: center;
   flex-direction: column;
   background-color: white;
+  border: 1px solid #CFCFCF;
+  border-radius: 4px;
 }
 
-.button {
-  margin-top: 20px;
+.container form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container input {
   width: 100%;
 }
-.input {
 
+.container label {
+  margin-top: 30px;
+  width: 285px;
+}
+
+.container button {
+  margin-top: 45px;
+  width: 285px;
+}
+
+p {
+  text-align: center;
 }

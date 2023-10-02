@@ -1,27 +1,37 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { IAuthor } from '../../../../types/author.interface';
 
 import { Button, Input } from '../../../../common';
+import { authorsSlice } from '../../../../store/slices/authorsSlice';
 
 import styles from './styles.module.css';
 
 type CreateAuthorProps = {
-	onCreateAuthor: Function;
+	onCreateAuthor?: (author: IAuthor) => void;
 };
 
 export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 	const [newAuthor, setNewAuthor] = useState('');
+	const dispatch = useDispatch();
 
 	const onInputChange = (event: BaseSyntheticEvent) => {
 		setNewAuthor(event.target.value);
 	};
 
-	const handleCreateAuthor = (newAuthorName: string) => {
+	const handleCreateAuthor = (
+		newAuthorName: string,
+		event: BaseSyntheticEvent
+	) => {
+		event.preventDefault();
+
 		const newAuthor = {
 			name: newAuthorName,
-			id: Math.floor(Math.random() * 1000),
+			id: `${Math.floor(Math.random() * 1000)}`,
 		};
 
-		onCreateAuthor(newAuthor);
+		dispatch(authorsSlice.actions.saveAuthor(newAuthor));
 	};
 
 	return (
@@ -37,7 +47,7 @@ export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 			<Button
 				data-testid='createAuthorButton'
 				buttonText='Create Author'
-				handleClick={() => handleCreateAuthor(newAuthor)}
+				handleClick={(event) => handleCreateAuthor(newAuthor, event)}
 			></Button>
 		</div>
 	);

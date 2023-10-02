@@ -1,13 +1,16 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { login } from '../../services';
+import { userSlice } from '../../store/slices/userSlice';
 
 import styles from './styles.module.css';
 
 export const Login = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
@@ -20,6 +23,13 @@ export const Login = () => {
 
 		if (response) {
 			localStorage.setItem('token', response.result);
+			dispatch(
+				userSlice.actions.setUserData({
+					email: response.user.email,
+					name: response.user.name,
+					token: response.result,
+				})
+			);
 			navigate('/courses');
 		}
 	};
@@ -45,11 +55,11 @@ export const Login = () => {
 					onChange={(event) => handleValueChange(setPassword, event)}
 					labelText={'Password'}
 				></Input>
-				<Button buttonText='Login'></Button>
+				<Button buttonText='LOGIN'></Button>
 			</form>
 			<p>
 				If you don't have an account you can&nbsp;
-				<Link to='/registration'>register</Link>
+				<Link to='/registration'>Registration</Link>
 			</p>
 		</div>
 	);
