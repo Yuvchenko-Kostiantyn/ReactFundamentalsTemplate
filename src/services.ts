@@ -65,27 +65,87 @@ export const getAuthors = async (): Promise<IApiResponse<IAuthor[]>> => {
 	}
 };
 
-export const getCurrentUser = async () => {
-	// write your code here
+export const getCurrentUser = async (token: string) => {
+	try {
+		const userData = await fetch(`${apiUrl}/users/me`, {
+			method: 'GET',
+			headers: {
+				Authorization: token,
+			},
+		});
+
+		return userData?.json();
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const updateCourse = async () => {
-	// write your code here
+export const updateCourse = async (
+	courseData: Partial<ICourse>,
+	token: string
+) => {
+	try {
+		await fetch(`${apiUrl}/logout`, {
+			method: 'POST',
+			body: JSON.stringify(courseData),
+			headers: {
+				Authorization: token,
+			},
+		});
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const logout = async () => {
-	// write your code here
+export const logout = async (token: string) => {
+	try {
+		await fetch(`${apiUrl}/logout`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: token,
+			},
+		});
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const deleteCourse = async () => {
-	// write your code here
+export const deleteCourse = async (courseId: string, token: string) => {
+	try {
+		await fetch(`${apiUrl}/courses/${courseId}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: token,
+			},
+		});
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const createCourse = async () => {
-	// write your code here
+export const createCourse = async (
+	course: ICourse,
+	token: string
+): Promise<any> => {
+	try {
+		const response = await fetch(`${apiUrl}/courses/add`, {
+			method: 'POST',
+			body: JSON.stringify(course),
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: token,
+			},
+		});
+
+		return await response.json();
+	} catch (err) {
+		console.error(err);
+	}
 };
 
-export const createAuthor = async (name: string) => {
+export const createAuthor = async (
+	name: string
+): Promise<IApiResponse<any>> => {
 	try {
 		const response = await fetch(`${apiUrl}/authors/add`, {
 			method: 'POST',

@@ -1,27 +1,34 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import { UserState } from '../../types/store';
 
 import { Button } from '../../common';
+import { useAppDispatch } from '../../store';
 import { userSelector } from '../../store/selectors';
-import { userSlice } from '../../store/slices/userSlice';
+import { getUserThunk, logoutThunk } from '../../store/thunks/userThunk';
 import { Logo } from './components';
 
 import styles from './styles.module.css';
 
 export const Header = () => {
-	const dispatch = useDispatch();
-	const userData: UserState = useSelector(userSelector);
+	const dispatch = useAppDispatch();
+	const user: UserState = useSelector(userSelector);
 
 	const onLogout = () => {
-		localStorage.removeItem('token');
-		dispatch(userSlice.actions.removeUserData());
+		user.token && dispatch(logoutThunk(user.token));
 	};
+
+	useEffect(() => {
+		if (user.token) {
+			console.log('call');
+			dispatch(getUserThunk(user.token));
+		}
+	}, [user.token, dispatch]);
 
 	const buttonAndName = (
 		<div className={styles.userContainer}>
-			<p className={styles.userName}>{userData.name}</p>
+			<p className={styles.userName}>{user.name}</p>
 			<Button buttonText={'LOGOUT'} handleClick={onLogout}></Button>
 		</div>
 	);
@@ -29,7 +36,7 @@ export const Header = () => {
 	return (
 		<div className={styles.headerContainer}>
 			<Logo></Logo>
-			{userData.token ? buttonAndName : null}
+			{user.token ? buttonAndName : null}
 		</div>
 	);
 };

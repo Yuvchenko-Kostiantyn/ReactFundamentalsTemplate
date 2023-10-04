@@ -21,15 +21,9 @@ export const Login = () => {
 			password,
 		});
 
-		if (response) {
+		if (response.successful) {
 			localStorage.setItem('token', response.result);
-			dispatch(
-				userSlice.actions.setUserData({
-					email: response.user.email,
-					name: response.user.name,
-					token: response.result,
-				})
-			);
+			dispatch(userSlice.actions.setUserData(response));
 			navigate('/courses');
 		}
 	};

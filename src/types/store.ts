@@ -9,5 +9,6 @@ export type UserState = {
 	isAuth: boolean;
 	name: string;
 	email: string;
+	role: string,
 	token: string | null;
 };
