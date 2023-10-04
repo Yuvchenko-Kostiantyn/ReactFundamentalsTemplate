@@ -9,5 +9,5 @@ import { userSelector } from '../../store/selectors';
 export const PrivateRoute = ({ children }: ComponentProps<any>) => {
 	const user: UserState = useSelector(userSelector);
 
-	return user.role === 'admin' ? children : <Navigate to='/courses' />;
+	return user?.role === 'admin' ? children : <Navigate to='/courses' />;
 };

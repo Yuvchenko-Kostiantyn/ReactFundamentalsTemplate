@@ -72,7 +72,12 @@ export const CourseCard = ({
 								buttonText={'🗑'}
 								handleClick={deleteCourse}
 							></Button>
-							<Button data-testid='updateCourse' buttonText={'Update'}></Button>
+							<Link to={`/courses/${course.id}/update`}>
+								<Button
+									data-testid='updateCourse'
+									buttonText={'Update'}
+								></Button>
+							</Link>
 						</div>
 					) : null}
 				</div>

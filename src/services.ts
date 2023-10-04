@@ -82,17 +82,19 @@ export const getCurrentUser = async (token: string) => {
 export const updateCourse = async (
 	courseData: Partial<ICourse>,
 	token: string
-) => {
+): Promise<IApiResponse<ICourse>> => {
 	try {
-		await fetch(`${apiUrl}/logout`, {
+		const response = await fetch(`${apiUrl}/logout`, {
 			method: 'POST',
 			body: JSON.stringify(courseData),
 			headers: {
 				Authorization: token,
 			},
 		});
-	} catch (err) {
-		console.error(err);
+
+		return await response.json();
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 

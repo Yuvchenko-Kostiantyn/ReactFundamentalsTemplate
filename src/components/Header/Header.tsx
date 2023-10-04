@@ -19,7 +19,7 @@ export const Header = () => {
 	const isLoginOrLogoutPage = pathname === '/login' || pathname === '/logout';
 
 	const onLogout = () => {
-		user.token && dispatch(logoutThunk(user.token));
+		dispatch(logoutThunk(user.token || ''));
 	};
 
 	const buttonAndName = (

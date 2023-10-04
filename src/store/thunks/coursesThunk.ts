@@ -1,10 +1,27 @@
 import { ICourse } from '../../types/course.interface';
 
-import { createCourse, deleteCourse, getCourses } from '../../services';
+import {
+	createCourse,
+	deleteCourse,
+	getCourses,
+	updateCourse,
+} from '../../services';
 import { AppDispatch } from '../index';
 import { coursesSlice, setCourses } from '../slices/coursesSlice';
 
-export const updateCourseThunk = () => {};
+export const updateCourseThunk = (
+	courseData: Partial<ICourse>,
+	token: string
+) => {
+	return async (dispatch: AppDispatch) => {
+		try {
+			const { result } = await updateCourse(courseData, token);
+			dispatch(coursesSlice.actions.updateCourse(result));
+		} catch (err) {
+			console.error(err);
+		}
+	};
+};
 
 export const deleteCourseThunk = (courseId: string, token: string | null) => {
 	return async (dispatch: AppDispatch) => {

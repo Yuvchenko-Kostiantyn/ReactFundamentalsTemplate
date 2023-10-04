@@ -16,16 +16,16 @@ export const Login = () => {
 
 	const handleSubmit = async (event: BaseSyntheticEvent) => {
 		event.preventDefault();
-		const response = await login({
-			email,
-			password,
-		});
-
-		if (response.successful) {
-			console.log('login successful');
+		try {
+			const response = await login({
+				email,
+				password,
+			});
 			localStorage.setItem('token', response.result);
 			dispatch(getUserThunk(response.result));
 			navigate('/courses');
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
