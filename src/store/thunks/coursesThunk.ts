@@ -37,7 +37,6 @@ export const deleteCourseThunk = (courseId: string, token: string | null) => {
 export const createCourseThunk = (course: ICourse, token: string) => {
 	return async (dispatch: AppDispatch) => {
 		try {
-			console.log(+course.duration);
 			const { result } = await createCourse(
 				{
 					...course,

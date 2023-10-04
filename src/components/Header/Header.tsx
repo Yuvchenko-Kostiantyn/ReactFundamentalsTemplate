@@ -16,7 +16,8 @@ export const Header = () => {
 	const dispatch = useAppDispatch();
 	const { pathname } = useLocation();
 	const user: UserState = useSelector(userSelector);
-	const isLoginOrLogoutPage = pathname === '/login' || pathname === '/logout';
+	const isLoginOrLogoutPage =
+		pathname === '/login' || pathname === '/registration';
 
 	const onLogout = () => {
 		dispatch(logoutThunk(user.token || ''));
