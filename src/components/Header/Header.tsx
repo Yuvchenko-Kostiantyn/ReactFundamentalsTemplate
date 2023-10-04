@@ -20,6 +20,7 @@ export const Header = () => {
 		pathname === '/login' || pathname === '/registration';
 
 	const onLogout = () => {
+		localStorage.removeItem('token');
 		dispatch(logoutThunk(user.token || ''));
 	};
 

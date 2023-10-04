@@ -36,7 +36,7 @@ export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 		<div className={styles.container}>
 			{/*reuse Input component with data-testid="createAuthorInput" attribute*/}
 			<Input
-				data-testid='CreateAuthorInput'
+				data-testid='createAuthorInput'
 				labelText='Author Name'
 				value={newAuthor}
 				onChange={onInputChange}

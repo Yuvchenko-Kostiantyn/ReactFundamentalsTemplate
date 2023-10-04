@@ -15,7 +15,6 @@ export const getUserThunk = (token: string) => {
 
 export const logoutThunk = (token: string) => {
 	return async (dispatch: AppDispatch) => {
-		localStorage.removeItem('token');
 		await logout(token);
 		dispatch(removeUserData());
 	};

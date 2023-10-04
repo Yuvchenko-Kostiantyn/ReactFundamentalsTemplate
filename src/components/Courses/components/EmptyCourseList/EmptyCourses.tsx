@@ -20,9 +20,14 @@ export const EmptyCourseList = () => {
 		<div className={styles.noCourses}>
 			<h1>Your List Is Empty</h1>
 			<p>{textMessage}</p>
-			<Link to={isAdmin ? '/courses/add' : '/login'}>
-				<Button data-testid='addCourse' buttonText={'Add New Course'}></Button>
-			</Link>
+			{isAdmin ? (
+				<Link to={isAdmin ? '/courses/add' : '/login'}>
+					<Button
+						data-testid='addCourse'
+						buttonText={'Add New Course'}
+					></Button>
+				</Link>
+			) : null}
 		</div>
 	);
 };
