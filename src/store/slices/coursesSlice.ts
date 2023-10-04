@@ -10,7 +10,7 @@ export const coursesSlice = createSlice({
 	initialState,
 	reducers: {
 		setCourses: (state: Draft<CoursesState>, { payload }) => {
-			return [...current(state), ...payload];
+			return [...payload];
 		},
 		saveCourse: (state: Draft<CoursesState>, { payload }) => {
 			return [...current(state), payload];

@@ -30,7 +30,6 @@ export const login = async (data: IUser): Promise<any> => {
 				'Content-Type': 'application/json',
 			},
 		});
-
 		return await response.json();
 	} catch (err: any) {
 		throw new Error(err);
@@ -75,8 +74,8 @@ export const getCurrentUser = async (token: string) => {
 		});
 
 		return userData?.json();
-	} catch (err) {
-		console.error(err);
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 
@@ -110,12 +109,12 @@ export const logout = async (token: string) => {
 	}
 };
 
-export const deleteCourse = async (courseId: string, token: string) => {
+export const deleteCourse = async (courseId: string, token: string | null) => {
 	try {
 		await fetch(`${apiUrl}/courses/${courseId}`, {
 			method: 'DELETE',
 			headers: {
-				Authorization: token,
+				Authorization: token || '',
 			},
 		});
 	} catch (err) {
@@ -126,7 +125,7 @@ export const deleteCourse = async (courseId: string, token: string) => {
 export const createCourse = async (
 	course: ICourse,
 	token: string
-): Promise<any> => {
+): Promise<IApiResponse<ICourse>> => {
 	try {
 		const response = await fetch(`${apiUrl}/courses/add`, {
 			method: 'POST',
@@ -138,13 +137,14 @@ export const createCourse = async (
 		});
 
 		return await response.json();
-	} catch (err) {
-		console.error(err);
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 
 export const createAuthor = async (
-	name: string
+	name: string,
+	token: string | null
 ): Promise<IApiResponse<any>> => {
 	try {
 		const response = await fetch(`${apiUrl}/authors/add`, {
@@ -152,6 +152,7 @@ export const createAuthor = async (
 			body: JSON.stringify({ name }),
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: token || '',
 			},
 		});
 

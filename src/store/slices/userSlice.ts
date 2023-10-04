@@ -1,4 +1,4 @@
-import { Draft, createSlice } from '@reduxjs/toolkit';
+import { Draft, createSlice, current } from '@reduxjs/toolkit';
 
 import { UserState } from '../../types/store';
 
@@ -16,18 +16,10 @@ export const userSlice = createSlice({
 	reducers: {
 		setUserData: (state: Draft<UserState>, { payload }) => {
 			console.log(payload);
-			state.isAuth = true;
-			state.email = payload.user.email;
-			state.name = payload.user.name;
-			state.token = payload.result;
-			state.role = payload.user.role;
+			return { ...current(state), ...payload, isAuth: true };
 		},
-		removeUserData: (state: Draft<UserState>) => {
-			state.isAuth = false;
-			state.email = '';
-			state.name = '';
-			state.role = '';
-			state.token = null;
+		removeUserData: () => {
+			return { ...initialState, token: null };
 		},
 	},
 });

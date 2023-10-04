@@ -1,16 +1,16 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { login } from '../../services';
-import { userSlice } from '../../store/slices/userSlice';
+import { useAppDispatch } from '../../store';
+import { getUserThunk } from '../../store/thunks/userThunk';
 
 import styles from './styles.module.css';
 
 export const Login = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
@@ -22,8 +22,9 @@ export const Login = () => {
 		});
 
 		if (response.successful) {
+			console.log('login successful');
 			localStorage.setItem('token', response.result);
-			dispatch(userSlice.actions.setUserData(response));
+			dispatch(getUserThunk(response.result));
 			navigate('/courses');
 		}
 	};

@@ -1,5 +1,5 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../types/author.interface';
@@ -7,8 +7,9 @@ import { ICourse } from '../../types/course.interface';
 
 import { Button, Input } from '../../common';
 import { getCourseDuration } from '../../helpers';
-import { authorsSelector } from '../../store/selectors';
-import { coursesSlice } from '../../store/slices/coursesSlice';
+import { useAppDispatch } from '../../store';
+import { authorsSelector, userSelector } from '../../store/selectors';
+import { createCourseThunk } from '../../store/thunks/coursesThunk';
 import { AuthorItem, CreateAuthor } from './components';
 
 import styles from './styles.module.css';
@@ -25,7 +26,8 @@ export const CourseForm = ({
 	createAuthor,
 }: CourseFormProps) => {
 	const authors = useSelector(authorsSelector);
-	const dispatch = useDispatch();
+	const user = useSelector(userSelector);
+	const dispatch = useAppDispatch();
 
 	const emptyCourse: ICourse = {
 		title: '',
@@ -51,9 +53,8 @@ export const CourseForm = ({
 		const creationDate = `${today.getDate()}/${
 			today.getMonth() + 1
 		}/${today.getFullYear()}`;
-		const id = `${Math.floor(Math.random() * 1000)}`;
 
-		dispatch(coursesSlice.actions.saveCourse({ ...course, creationDate, id }));
+		dispatch(createCourseThunk({ ...course, creationDate }, user.token || ''));
 	};
 
 	const onValueInput = (event: BaseSyntheticEvent) => {
@@ -78,7 +79,7 @@ export const CourseForm = ({
 			return {
 				title: prevState.title,
 				description: prevState.description,
-				duration: prevState.duration,
+				duration: +prevState.duration,
 				creationDate: prevState.creationDate,
 				authors: prevState.authors.filter((id: string) => id !== author.id),
 			};

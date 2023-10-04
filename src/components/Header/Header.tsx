@@ -1,30 +1,26 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 
 import { UserState } from '../../types/store';
 
 import { Button } from '../../common';
 import { useAppDispatch } from '../../store';
 import { userSelector } from '../../store/selectors';
-import { getUserThunk, logoutThunk } from '../../store/thunks/userThunk';
+import { logoutThunk } from '../../store/thunks/userThunk';
 import { Logo } from './components';
 
 import styles from './styles.module.css';
 
 export const Header = () => {
 	const dispatch = useAppDispatch();
+	const { pathname } = useLocation();
 	const user: UserState = useSelector(userSelector);
+	const isLoginOrLogoutPage = pathname === '/login' || pathname === '/logout';
 
 	const onLogout = () => {
 		user.token && dispatch(logoutThunk(user.token));
 	};
-
-	useEffect(() => {
-		if (user.token) {
-			console.log('call');
-			dispatch(getUserThunk(user.token));
-		}
-	}, [user.token, dispatch]);
 
 	const buttonAndName = (
 		<div className={styles.userContainer}>
@@ -33,10 +29,18 @@ export const Header = () => {
 		</div>
 	);
 
+	const loginButton = (
+		<Link to='/login'>
+			<Button buttonText='LOGIN'></Button>
+		</Link>
+	);
+
 	return (
 		<div className={styles.headerContainer}>
 			<Logo></Logo>
-			{user.token ? buttonAndName : null}
+			{!isLoginOrLogoutPage ? (
+				<div>{user.token ? buttonAndName : loginButton}</div>
+			) : null}
 		</div>
 	);
 };

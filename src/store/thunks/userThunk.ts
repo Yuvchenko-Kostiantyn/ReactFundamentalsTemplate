@@ -4,9 +4,12 @@ import { removeUserData, setUserData } from '../slices/userSlice';
 
 export const getUserThunk = (token: string) => {
 	return async (dispatch: AppDispatch) => {
-		const { result } = await getCurrentUser(token);
-
-		dispatch(setUserData(result));
+		try {
+			const { result } = await getCurrentUser(token);
+			dispatch(setUserData({ ...result, token }));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
@@ -14,6 +17,6 @@ export const logoutThunk = (token: string) => {
 	return async (dispatch: AppDispatch) => {
 		localStorage.removeItem('token');
 		await logout(token);
-		dispatch(removeUserData);
+		dispatch(removeUserData());
 	};
 };
