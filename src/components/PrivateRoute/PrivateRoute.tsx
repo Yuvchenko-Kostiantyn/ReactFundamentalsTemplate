@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
-export const PrivateRoute = () => {
-	//write your code here
+import { userRoleSelector } from '../../store/selectors';
 
-	return (
-		// write your code here instead of this 'p' tag
-		<p>PrivateRoute</p>
-	);
+export const PrivateRoute = ({ children }: ComponentProps<any>) => {
+	const userRole: string = useSelector(userRoleSelector);
+
+	return userRole === 'admin' ? children : <Navigate to='/courses' />;
 };

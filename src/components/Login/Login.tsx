@@ -1,36 +1,31 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, Input } from '../../common';
 import { login } from '../../services';
-import { userSlice } from '../../store/slices/userSlice';
+import { useAppDispatch } from '../../store';
+import { getUserThunk } from '../../store/thunks/userThunk';
 
 import styles from './styles.module.css';
 
 export const Login = () => {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 
 	const handleSubmit = async (event: BaseSyntheticEvent) => {
 		event.preventDefault();
-		const response = await login({
-			email,
-			password,
-		});
-
-		if (response) {
+		try {
+			const response = await login({
+				email,
+				password,
+			});
 			localStorage.setItem('token', response.result);
-			dispatch(
-				userSlice.actions.setUserData({
-					email: response.user.email,
-					name: response.user.name,
-					token: response.result,
-				})
-			);
+			dispatch(getUserThunk(response.result));
 			navigate('/courses');
+		} catch (err) {
+			console.error(err);
 		}
 	};
 

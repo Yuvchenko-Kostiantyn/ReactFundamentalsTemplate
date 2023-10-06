@@ -1,10 +1,12 @@
 import React, { BaseSyntheticEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { IAuthor } from '../../../../types/author.interface';
 
 import { Button, Input } from '../../../../common';
-import { authorsSlice } from '../../../../store/slices/authorsSlice';
+import { useAppDispatch } from '../../../../store';
+import { userSelector } from '../../../../store/selectors';
+import { createAuthorThunk } from '../../../../store/thunks/authorsThunk';
 
 import styles from './styles.module.css';
 
@@ -13,8 +15,9 @@ type CreateAuthorProps = {
 };
 
 export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
+	const user = useSelector(userSelector);
 	const [newAuthor, setNewAuthor] = useState('');
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const onInputChange = (event: BaseSyntheticEvent) => {
 		setNewAuthor(event.target.value);
@@ -26,19 +29,14 @@ export const CreateAuthor = ({ onCreateAuthor }: CreateAuthorProps) => {
 	) => {
 		event.preventDefault();
 
-		const newAuthor = {
-			name: newAuthorName,
-			id: `${Math.floor(Math.random() * 1000)}`,
-		};
-
-		dispatch(authorsSlice.actions.saveAuthor(newAuthor));
+		dispatch(createAuthorThunk(newAuthorName, user.token));
 	};
 
 	return (
 		<div className={styles.container}>
 			{/*reuse Input component with data-testid="createAuthorInput" attribute*/}
 			<Input
-				data-testid='CreateAuthorInput'
+				data-testid='createAuthorInput'
 				labelText='Author Name'
 				value={newAuthor}
 				onChange={onInputChange}

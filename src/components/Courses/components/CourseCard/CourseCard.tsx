@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { IAuthor } from '../../../../types/author.interface';
@@ -11,8 +11,9 @@ import {
 	getCourseDuration,
 	mapAuthorNames,
 } from '../../../../helpers';
-import { authorsSelector } from '../../../../store/selectors';
-import { coursesSlice } from '../../../../store/slices/coursesSlice';
+import { useAppDispatch } from '../../../../store';
+import { authorsSelector, userSelector } from '../../../../store/selectors';
+import { deleteCourseThunk } from '../../../../store/thunks/coursesThunk';
 
 import styles from './styles.module.css';
 
@@ -27,12 +28,15 @@ export const CourseCard = ({
 	authorsList,
 	handleShowCourse,
 }: CourseCardProps) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const authors = useSelector(authorsSelector);
+	const user = useSelector(userSelector);
+
 	const courseAuthors = mapAuthorNames(course.authors, authors);
+	const isUserAdmin = user.role === 'admin';
 
 	const deleteCourse = () => {
-		dispatch(coursesSlice.actions.deleteCourse(course.id));
+		course.id && dispatch(deleteCourseThunk(course.id, user.token));
 	};
 
 	return (
@@ -61,12 +65,21 @@ export const CourseCard = ({
 					<Link to={`/courses/${course.id}`}>
 						<Button buttonText='Show Course'></Button>
 					</Link>
-					<Button
-						data-testid='deleteCourse'
-						buttonText={'🗑'}
-						handleClick={deleteCourse}
-					></Button>
-					<Button data-testid='updateCourse' buttonText={'Update'}></Button>
+					{isUserAdmin ? (
+						<div className='adminButtons'>
+							<Button
+								data-testid='deleteCourse'
+								buttonText={'🗑'}
+								handleClick={deleteCourse}
+							></Button>
+							<Link to={`/courses/${course.id}/update`}>
+								<Button
+									data-testid='updateCourse'
+									buttonText={'Update'}
+								></Button>
+							</Link>
+						</div>
+					) : null}
 				</div>
 			</div>
 		</div>

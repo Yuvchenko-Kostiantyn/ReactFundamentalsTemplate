@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { IAuthor } from './types/author.interface';
-import { ICourse } from './types/course.interface';
-import { AuthorsState, CoursesState } from './types/store';
+import { AuthorsState, CoursesState, UserState } from './types/store';
 
 import {
 	CourseForm,
@@ -12,31 +10,33 @@ import {
 	Courses,
 	Header,
 	Login,
+	PrivateRoute,
 	Registration,
 } from './components';
-import { getAuthors, getCourses } from './services';
-import { authorsSelector, coursesSelector } from './store/selectors';
-import { authorsSlice } from './store/slices/authorsSlice';
-import { coursesSlice } from './store/slices/coursesSlice';
+import { useAppDispatch } from './store';
+import {
+	authorsSelector,
+	coursesSelector,
+	userSelector,
+} from './store/selectors';
+import { getAuthorsThunk } from './store/thunks/authorsThunk';
+import { getCoursesThunk } from './store/thunks/coursesThunk';
+import { getUserThunk } from './store/thunks/userThunk';
 
 function App() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const courses: CoursesState = useSelector(coursesSelector);
 	const authors: AuthorsState = useSelector(authorsSelector);
+	const user: UserState = useSelector(userSelector);
 	const token = localStorage.getItem('token');
 
-	const dispatchSetItems = (courses: ICourse[], authors: IAuthor[]) => {
-		dispatch(coursesSlice.actions.setCourses(courses));
-		dispatch(authorsSlice.actions.setAuthors(authors));
-	};
-
 	useEffect(() => {
-		(async () => {
-			const courses = await getCourses();
-			const authors = await getAuthors();
-			dispatchSetItems(courses.result, authors.result);
-		})();
+		dispatch(getCoursesThunk());
+		dispatch(getAuthorsThunk());
+		if (user.token) {
+			dispatch(getUserThunk(user.token));
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -57,7 +57,22 @@ function App() {
 					element={<Courses coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route path='/courses/:courseId' element={<CourseInfo />}></Route>
-				<Route path='/courses/add' element={<CourseForm />}></Route>
+				<Route
+					path='/courses/add'
+					element={
+						<PrivateRoute>
+							<CourseForm />
+						</PrivateRoute>
+					}
+				></Route>
+				<Route
+					path='/courses/update/:courseId'
+					element={
+						<PrivateRoute>
+							<CourseForm />
+						</PrivateRoute>
+					}
+				></Route>
 			</Routes>
 		</>
 	);
