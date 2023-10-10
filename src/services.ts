@@ -106,8 +106,8 @@ export const logout = async (token: string) => {
 				Authorization: token,
 			},
 		});
-	} catch (err) {
-		console.error(err);
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 
@@ -119,8 +119,8 @@ export const deleteCourse = async (courseId: string, token: string | null) => {
 				Authorization: token || '',
 			},
 		});
-	} catch (err) {
-		console.error(err);
+	} catch (err: any) {
+		throw new Error(err);
 	}
 };
 

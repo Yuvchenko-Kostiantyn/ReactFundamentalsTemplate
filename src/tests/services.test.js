@@ -138,4 +138,61 @@ describe('Services', () => {
 		});
 		expect(response).toEqual({ data: 'Success' });
 	});
+
+	describe('When API rejects', () => {
+		beforeEach(() => {
+			jest.clearAllMocks();
+			jest.spyOn(window, 'fetch').mockRejectedValue(new Error('Test Error'));
+		});
+
+		it('should throw on user creation request', async () => {
+			const mockUser = { email: 'email', password: 'password' };
+			await expect(createUser(mockUser)).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on login request', async () => {
+			const mockUser = { email: 'email', password: 'password' };
+			await expect(login(mockUser)).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on all courses request', async () => {
+			await expect(getCourses()).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on all authors request', async () => {
+			await expect(getAuthors()).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on current user request', async () => {
+			await expect(getCurrentUser()).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on course update request', async () => {
+			const mockCourse = { id: '10', title: 'test' };
+			await expect(updateCourse(mockCourse, 'token')).rejects.toThrow(
+				'Test Error'
+			);
+		});
+
+		it('should throw on logout request', async () => {
+			await expect(logout('token')).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on delete course request', async () => {
+			await expect(deleteCourse('token')).rejects.toThrow('Test Error');
+		});
+
+		it('should throw on course creation request', async () => {
+			const mockCourse = { id: '10', title: 'test' };
+			await expect(createCourse(mockCourse, 'token')).rejects.toThrow(
+				'Test Error'
+			);
+		});
+
+		it('should throw on author creation request', async () => {
+			await expect(createAuthor('Test Name', 'token')).rejects.toThrow(
+				'Test Error'
+			);
+		});
+	});
 });

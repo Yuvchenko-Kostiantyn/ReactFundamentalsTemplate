@@ -64,8 +64,6 @@ describe('CourseForm', () => {
 	});
 
 	it('should set state for the selected property', () => {
-		const mockCallback = jest.fn();
-
 		const titleInput = screen.getByTestId('titleInput');
 		fireEvent.change(titleInput, {
 			target: { value: 'Test Title', name: 'title' },

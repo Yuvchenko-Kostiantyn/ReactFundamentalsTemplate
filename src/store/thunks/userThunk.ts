@@ -15,7 +15,12 @@ export const getUserThunk = (token: string) => {
 
 export const logoutThunk = (token: string) => {
 	return async (dispatch: AppDispatch) => {
-		await logout(token);
-		dispatch(removeUserData());
+		try {
+			await logout(token);
+			dispatch(removeUserData());
+		} catch (err: any) {
+			console.error(err);
+			dispatch(removeUserData());
+		}
 	};
 };
