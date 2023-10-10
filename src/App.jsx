@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
 	CourseForm,
@@ -31,7 +31,7 @@ function App() {
 
 	const token = localStorage.getItem('token');
 	return (
-		<BrowserRouter>
+		<>
 			<Header />
 			<Routes>
 				<Route
@@ -61,7 +61,7 @@ function App() {
 					}
 				></Route>
 			</Routes>
-		</BrowserRouter>
+		</>
 	);
 }
 
