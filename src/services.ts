@@ -84,7 +84,7 @@ export const updateCourse = async (
 	token: string
 ): Promise<IApiResponse<ICourse>> => {
 	try {
-		const response = await fetch(`${apiUrl}/logout`, {
+		const response = await fetch(`${apiUrl}/courses/${courseData.id}`, {
 			method: 'POST',
 			body: JSON.stringify(courseData),
 			headers: {

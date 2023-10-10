@@ -1,5 +1,5 @@
-import { IAuthor } from "./author.interface";
-import { ICourse } from "./course.interface";
+import { IAuthor } from './author.interface';
+import { ICourse } from './course.interface';
 
 export type AuthorsState = IAuthor[];
 
@@ -9,6 +9,6 @@ export type UserState = {
 	isAuth: boolean;
 	name: string;
 	email: string;
-	role: string,
+	role: string;
 	token: string | null;
 };

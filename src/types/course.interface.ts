@@ -1,8 +1,8 @@
 export interface ICourse {
-	id?: string,
-	creationDate: string,
+	id?: string;
+	creationDate: string;
 	title: string;
 	description: string;
-	duration: number
+	duration: number;
 	authors: string[];
 }
