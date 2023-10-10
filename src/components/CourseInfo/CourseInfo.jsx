@@ -16,9 +16,9 @@ export const CourseInfo = ({
 	onBack,
 	showCourseId,
 }) => {
-	const { id } = useParams();
+	const { courseId } = useParams();
 	const course = coursesList.find((course) => {
-		return course.id === id;
+		return course.id === courseId;
 	});
 
 	const courseAuthors = mapAuthorNames(course?.authors, authorsList);

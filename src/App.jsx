@@ -47,7 +47,7 @@ function App() {
 					element={<Courses coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route
-					path='/courses/:id'
+					path='/courses/:courseId'
 					element={<CourseInfo coursesList={courses} authorsList={authors} />}
 				></Route>
 				<Route
