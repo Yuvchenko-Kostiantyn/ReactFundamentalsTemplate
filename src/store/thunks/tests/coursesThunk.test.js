@@ -36,13 +36,10 @@ describe('coursesThunk', () => {
 			const mockDispatch = jest.fn();
 			const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
-			const thunk = updateCourseThunk(mockCourseData, 'test_token');
+			const thunk = updateCourseThunk(mockCourseData, 'token');
 			await thunk(mockDispatch);
 
-			expect(mockUpdateCourse).toHaveBeenCalledWith(
-				mockCourseData,
-				'test_token'
-			);
+			expect(mockUpdateCourse).toHaveBeenCalledWith(mockCourseData, 'token');
 			expect(consoleErrorSpy).toHaveBeenCalledWith(
 				new Error('An error occurred')
 			);
